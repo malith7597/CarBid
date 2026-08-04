@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Sell Your Car - Step 3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#00174c",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "inverse-on-surface": "#2e3039",
+                        "on-primary-fixed-variant": "#003daa",
+                        "on-tertiary-fixed": "#380d00",
+                        "surface-container-lowest": "#0c0e16",
+                        "surface-dark": "#0f172a",
+                        "surface-tint": "#b4c5ff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "success": "#10b981",
+                        "surface-container-highest": "#32343e",
+                        "on-secondary-fixed": "#161c28",
+                        "secondary-container": "#414755",
+                        "primary-container": "#135bec",
+                        "warning": "#f59e0b",
+                        "on-secondary": "#2a303d",
+                        "secondary": "#c1c6d7",
+                        "on-primary-container": "#e2e6ff",
+                        "tertiary": "#ffb59b",
+                        "secondary-fixed": "#dde2f4",
+                        "inverse-primary": "#0052de",
+                        "surface-bright": "#373942",
+                        "secondary-fixed-dim": "#c1c6d7",
+                        "surface-container": "#1d1f28",
+                        "outline-variant": "#434655",
+                        "primary": "#b4c5ff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "error": "#ef4444",
+                        "on-background": "#e1e1ee",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#191b24",
+                        "on-secondary-container": "#afb5c5",
+                        "tertiary-container": "#b93d00",
+                        "error-container": "#93000a",
+                        "on-primary": "#00297a",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary": "#5c1a00",
+                        "on-surface-variant": "#c3c5d8",
+                        "outline": "#8d90a1",
+                        "background-light": "#f6f6f8",
+                        "surface-container-high": "#282a32",
+                        "on-error": "#690005",
+                        "background": "#11131b",
+                        "inverse-surface": "#e1e1ee",
+                        "on-surface": "#e1e1ee",
+                        "surface-dim": "#11131b",
+                        "tertiary-fixed": "#ffdbcf",
+                        "on-tertiary-container": "#ffe1d7",
+                        "on-secondary-fixed-variant": "#414755",
+                        "surface": "#11131b",
+                        "background-dark": "#101622",
+                        "surface-variant": "#32343e"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "page-margin": "1rem",
+                        "container-padding": "0.75rem",
+                        "stack-md": "1rem",
+                        "stack-lg": "1.5rem",
+                        "stack-sm": "0.75rem",
+                        "icon-gap": "1rem"
+                    },
+                    fontFamily: {
+                        "notification-title": ["Manrope"],
+                        "nav-label": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "h1": ["Manrope"],
+                        "caption": ["Manrope"]
+                    },
+                    fontSize: {
+                        "notification-title": ["14px", { "lineHeight": "18px", "fontWeight": "700" }],
+                        "nav-label": ["10px", { "lineHeight": "12px", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "12px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "h1": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "caption": ["10px", { "lineHeight": "12px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #101622;
+            color: #f6f6f8;
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .custom-card {
+            background-color: #192233;
+            border: 1px solid #324467;
+        }
+
+        .upload-dash {
+            border: 1px dashed #434655;
+            background-color: rgba(19, 91, 236, 0.05);
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="max-w-[430px] mx-auto min-h-screen relative pb-32">
+<!-- Top Navigation (Transactional, no BottomNav) -->
+<header class="fixed top-0 w-full max-w-[430px] z-50 bg-[#101622]/90 backdrop-blur-md border-b border-[#324467]/50 h-16 flex items-center justify-between px-page-margin">
+<button aria-label="Go back" class="text-[#f6f6f8] active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-notification-title text-notification-title text-[#f6f6f8]">Sell Your Car</h1>
+<button class="font-body-md text-body-md text-[#b4c5ff] active:scale-95 transition-transform">
+            Help
+        </button>
+</header>
+<main class="pt-20 px-page-margin flex flex-col gap-stack-lg">
+<!-- Progress Header -->
+<section class="flex flex-col gap-2 pt-2">
+<div class="flex justify-between items-center w-full">
+<span class="font-label-caps text-label-caps text-[#135bec] uppercase">Step 3 of 4</span>
+<span class="font-caption text-caption text-[#92a4c9]">75% Complete</span>
+</div>
+<div class="w-full bg-[#192233] h-1.5 rounded-full overflow-hidden border border-[#324467]/30">
+<div class="bg-[#135bec] h-full rounded-full w-[75%] transition-all duration-500"></div>
+</div>
+<div class="mt-4">
+<h2 class="font-h1 text-h1 text-[#f6f6f8] mb-2">Condition &amp; documentation</h2>
+<p class="font-body-md text-body-md text-[#92a4c9]">High-value buyers expect evidence. Complete records attract stronger bids.</p>
+</div>
+</section>
+<!-- Condition Report -->
+<section class="custom-card rounded-xl p-container-padding flex flex-col gap-3">
+<div class="flex items-start gap-3">
+<div class="bg-[#135bec]/20 p-2 rounded-lg text-[#b4c5ff]">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div class="flex-1">
+<h3 class="font-notification-title text-notification-title text-[#f6f6f8]">Condition Report (PDF)</h3>
+<p class="font-caption text-caption text-[#92a4c9] mt-1">A professional inspection report. Strongly recommended.</p>
+</div>
+</div>
+<div class="bg-[#101622] rounded-lg p-3 border border-[#324467] flex items-center justify-between mt-2">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[16px] text-success">check_circle</span>
+<span class="font-body-md text-body-md text-[#f6f6f8] truncate text-sm">inspection_porsche_911.pdf</span>
+</div>
+<span class="font-caption text-caption text-success ml-2 whitespace-nowrap">Uploaded</span>
+</div>
+<button class="upload-dash rounded-lg p-4 flex flex-col items-center justify-center gap-2 mt-1 active:bg-[#135bec]/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[#b4c5ff]">cloud_upload</span>
+<span class="font-body-md text-body-md text-[#b4c5ff] text-sm">Upload Updated Report</span>
+</button>
+</section>
+<!-- Service Records -->
+<section class="custom-card rounded-xl p-container-padding flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-3">
+<div class="bg-[#324467]/30 p-2 rounded-lg text-[#c3c5d8]">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div>
+<h3 class="font-notification-title text-notification-title text-[#f6f6f8]">Service Records</h3>
+<p class="font-caption text-caption text-[#92a4c9] mt-1">Invoices and maintenance history. PDF, JPG or PNG.</p>
+</div>
+</div>
+<div class="bg-[#101622] px-2 py-1 rounded border border-[#324467]">
+<span class="font-caption text-caption text-[#f6f6f8]">4 documents</span>
+</div>
+</div>
+<div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pt-2 -mx-2 px-2">
+<!-- Thumbnail 1 -->
+<div class="relative min-w-[72px] h-[72px] rounded-lg border border-[#324467] overflow-hidden group">
+<div class="bg-cover bg-center w-full h-full opacity-60" data-alt="A close-up photograph of a crisp, white service invoice document for a luxury sports car, illuminated by bright, neutral studio lighting. The document rests on a dark slate surface. The aesthetic is clean, modern, and highly legible, with deep blacks and stark whites." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCb8YyBBnldvfw6QQFNQ-vvyIFF0Uo08L4zj8Dr-L7EWpv2D6-Xal5DyYLwOWaI5mJRkbOgeMr0kAkW3-37Rl5XLTG3oce6nlPL8i3y-nP7IYFGvvm2N78pzDciyanKu5-Py3wOzk-6OrUTviDHiUnw4CY50oxIILBs8_-XT4PGYJ0Jr49y0qutuCV4FN_LCoZx7VCwDOKGgtl_b-b3QO99itreuFFbvufiVhZaohZfXOpZ0IhXhLxKowwqM8XedirEsnLTvb3XgddS')"></div>
+<button class="absolute top-1 right-1 bg-[#101622]/80 rounded-full p-0.5 text-error backdrop-blur-sm border border-error/30 active:scale-90">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<div class="absolute bottom-0 w-full bg-[#101622]/90 backdrop-blur-sm px-1 py-0.5">
+<span class="font-caption text-[8px] text-[#f6f6f8] block truncate">Invoice_23.jpg</span>
+</div>
+</div>
+<!-- Thumbnail 2 -->
+<div class="relative min-w-[72px] h-[72px] rounded-lg border border-[#324467] overflow-hidden group">
+<div class="bg-cover bg-center w-full h-full opacity-60" data-alt="A macro shot of a detailed mechanical repair receipt, showing line items for premium car parts. The paper is slightly textured, lit with a cool, clinical light to emphasize authenticity and precision. The background is a very dark, blurred out mechanic's workbench." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBoVUOz14CHrhdlRfFbTbyELI6G0o6aJzV-c7zsnUnQzsn-jsk3wwoO2YJ-qssT36qc-LeU_51qPknGLxHiGLnK7x1hiFTCOgw-8pg78ycoeo1SftY0ebcc-a-x8afLfF93HLjMaQE1RpdFImjczHaLpQoHkXaNqut60FY8if-sUDBj0aHbdRGYned0UxujzMq5uroPW3eFj-69OCYzWrcipAq1Ye-UauppoDH_cZl_qFaH-nPf_W2gqxtC5NwUQltuxzxz2GxQDJDr')"></div>
+<button class="absolute top-1 right-1 bg-[#101622]/80 rounded-full p-0.5 text-error backdrop-blur-sm border border-error/30 active:scale-90">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<div class="absolute bottom-0 w-full bg-[#101622]/90 backdrop-blur-sm px-1 py-0.5">
+<span class="font-caption text-[8px] text-[#f6f6f8] block truncate">Service_22.pdf</span>
+</div>
+</div>
+<!-- Thumbnail 3 -->
+<div class="relative min-w-[72px] h-[72px] rounded-lg border border-[#324467] overflow-hidden bg-[#101622] flex items-center justify-center group">
+<span class="material-symbols-outlined text-[#434655] text-3xl">picture_as_pdf</span>
+<button class="absolute top-1 right-1 bg-[#101622]/80 rounded-full p-0.5 text-error backdrop-blur-sm border border-error/30 active:scale-90">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<div class="absolute bottom-0 w-full bg-[#101622]/90 backdrop-blur-sm px-1 py-0.5">
+<span class="font-caption text-[8px] text-[#f6f6f8] block truncate">History.pdf</span>
+</div>
+</div>
+<!-- Thumbnail 4 -->
+<div class="relative min-w-[72px] h-[72px] rounded-lg border border-[#324467] overflow-hidden group">
+<div class="bg-cover bg-center w-full h-full opacity-60" data-alt="A neatly folded dealer maintenance record booklet for a high-end vehicle, resting on a dark carbon fiber texture. The lighting is dramatic, casting subtle shadows to give depth to the paper texture. The overall color palette is dark navy and crisp white." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnpG0hh0pPITMX67WWFdmaobiW258faLKfEEag5Gfzoi2JUEoZz881gfugg1zAh4D_8Y5g9dFcOWUhqe5ScP3hf3nRegBgifQLPKJNT3dNPC6IxIEEICL93nlgODwVn72EtS2Y5hfznYx75JGpG3KoCoenWuPg76w-ifgYWtj2hOS1XvjJemcczGuMbAUDTSBltSjw9VB6cfGgmKbQExw8C8gOntuCjMmTV3QnqinUtEXTWf95lF8iE81dV5uM2Nsprzd-o0Baged-')"></div>
+<button class="absolute top-1 right-1 bg-[#101622]/80 rounded-full p-0.5 text-error backdrop-blur-sm border border-error/30 active:scale-90">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<div class="absolute bottom-0 w-full bg-[#101622]/90 backdrop-blur-sm px-1 py-0.5">
+<span class="font-caption text-[8px] text-[#f6f6f8] block truncate">Booklet.jpg</span>
+</div>
+</div>
+<!-- Add More -->
+<button class="min-w-[72px] h-[72px] rounded-lg upload-dash flex flex-col items-center justify-center gap-1 active:bg-[#135bec]/10">
+<span class="material-symbols-outlined text-[#b4c5ff] text-[20px]">add</span>
+<span class="font-caption text-[9px] text-[#b4c5ff]">Add</span>
+</button>
+</div>
+</section>
+<!-- VIN Input -->
+<section class="flex flex-col gap-2">
+<label class="font-notification-title text-notification-title text-[#f6f6f8] flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#92a4c9]">barcode</span>
+                Vehicle Identification Number (VIN)
+            </label>
+<input class="w-full bg-[#192233] border border-[#324467] rounded-lg p-3 text-[#f6f6f8] font-mono text-sm placeholder:text-[#434655] focus:outline-none focus:border-[#135bec] focus:ring-1 focus:ring-[#135bec] transition-colors" placeholder="WP0AA2A96NS220156" type="text" value="WP0AA2A96NS220156"/>
+<p class="font-caption text-caption text-[#92a4c9]">We verify the VIN against national records before your listing goes live.</p>
+</section>
+<!-- Known Flaws -->
+<section class="flex flex-col gap-2">
+<label class="font-notification-title text-notification-title text-[#f6f6f8]">Known Flaws &amp; Imperfections</label>
+<textarea class="w-full bg-[#192233] border border-[#324467] rounded-lg p-3 text-[#f6f6f8] font-body-md text-sm placeholder:text-[#434655] focus:outline-none focus:border-[#135bec] focus:ring-1 focus:ring-[#135bec] transition-colors resize-none" placeholder="Disclose any stone chips, kerbed wheels, paintwork or mechanical faults. Full disclosure protects you from post-sale disputes." rows="4"></textarea>
+</section>
+<!-- Modifications Toggle -->
+<section class="custom-card rounded-xl p-container-padding flex items-center justify-between">
+<div class="pr-4">
+<h3 class="font-notification-title text-notification-title text-[#f6f6f8]">Vehicle has aftermarket modifications</h3>
+<p class="font-caption text-caption text-[#92a4c9] mt-1">Non-factory parts, tuning or cosmetic changes</p>
+</div>
+<!-- Custom Toggle -->
+<label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[#324467] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#135bec]"></div>
+</label>
+</section>
+<!-- Info Callout -->
+<section class="bg-[#135bec]/10 border border-[#135bec]/30 rounded-xl p-3 flex items-start gap-3 mt-2">
+<span class="material-symbols-outlined text-[#b4c5ff] mt-0.5">format_image_left</span>
+<p class="font-body-md text-body-md text-[#b4c5ff] text-sm">Listings with a condition report and full service history receive 40% more bids on average.</p>
+</section>
+</main>
+<!-- Bottom Action Bar Fixed -->
+<div class="fixed bottom-0 w-full max-w-[430px] bg-[#101622]/95 backdrop-blur-md border-t border-[#324467]/50 p-page-margin pb-safe z-50">
+<div class="flex gap-3 h-12 pb-2">
+<button class="flex-1 bg-[#192233] border border-[#324467] text-[#f6f6f8] font-notification-title rounded-lg active:scale-95 transition-transform">
+                Back
+            </button>
+<button class="flex-[2] bg-[#135bec] text-white font-notification-title rounded-lg shadow-lg shadow-[#135bec]/20 active:scale-95 transition-transform flex items-center justify-center gap-2">
+                Next: Review &amp; Submit
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

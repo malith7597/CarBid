@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarBid — Premium Auctions</title>
+    <meta name="description" content="Bid on inspected luxury and performance vehicles." />
+
+    <!--
+      Theme colour for mobile browser chrome. Two entries so the address bar follows the theme.
+      Values are the literal background tokens: #f6f6f8 light / #101622 dark.
+    -->
+    <meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101622" media="(prefers-color-scheme: dark)" />
+
+    <!--
+      BLOCKING, ON PURPOSE. This must run before first paint.
+
+      React mounts after the browser has already painted, so resolving the theme in a component
+      means a dark-mode user gets a white flash on every single page load. This script applies the
+      class synchronously, before any pixels land. It is small and deliberately dependency-free.
+
+      Keep the storage key and resolution logic in sync with src/providers/ThemeProvider.tsx.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('carbid-theme');
+          var preference =
+            stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+          var isDark =
+            preference === 'dark' ||
+            (preference === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* Blocked storage — fall back to the light default rather than failing to render. */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

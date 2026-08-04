@@ -1,0 +1,79 @@
+/* CarBid web entry stylesheet. Import order matters: tokens must land before Tailwind's base. */
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    /* Prevents iOS Safari from inflating text in landscape. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Digits align in every money column without per-component opt-in. */
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible focus is non-negotiable — the mobile designs never specified one. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Headings are tight and balanced; the design is a heavy-weight system. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold tracking-tight;
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /**
+   * Money must never wrap or shift width as digits change — it sits in table columns and in the
+   * bid panel where a reflow reads as a price change.
+   */
+  .money {
+    @apply font-mono font-bold tracking-tight;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /** Wide content scrolls inside its own container so the page body never scrolls sideways. */
+  .scroll-x {
+    @apply overflow-x-auto;
+    overscroll-behavior-x: contain;
+  }
+
+  /**
+   * Content must clear the mobile bottom tab bar. Only applies in the compact regime — the
+   * sidebar replaces the tab bar at md.
+   */
+  .tab-bar-clearance {
+    padding-bottom: theme('spacing.tabBarClearance');
+  }
+  @screen md {
+    .tab-bar-clearance {
+      padding-bottom: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

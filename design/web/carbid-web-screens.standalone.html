@@ -1,0 +1,1887 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CarBid — Web Screen Translations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+/* ============================================================
+   SHELL TOKENS — theme-aware (review chrome)
+   ============================================================ */
+:root{
+  --paper:#f4f6fa;        /* neutral biased toward the blue accent */
+  --paper-2:#ffffff;
+  --ink:#111725;
+  --ink-2:#48536b;
+  --rule:#d8dee9;
+  --accent:#135bec;
+  --accent-soft:#e5ecfd;
+  --shadow:0 1px 2px rgba(17,23,37,.06),0 8px 24px -12px rgba(17,23,37,.18);
+
+  /* APP TOKENS — fixed, from CarBid's own design system. Never themed. */
+  --app-bg:#101622;
+  --app-surface:#192233;
+  --app-surface-2:#1f2b40;
+  --app-text:#f6f6f8;
+  --app-muted:#92a4c9;
+  --app-border:#324467;
+  --app-primary:#135bec;
+  --app-primary-ink:#ffffff;
+  --app-live:#22c55e;
+  --app-warn:#f59e0b;
+  --app-danger:#ef4444;
+
+  --ui:"Manrope",system-ui,-apple-system,"Segoe UI Variable Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+  --r:8px;               /* CarBid ROUND_EIGHT */
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0b0e14;--paper-2:#12161f;--ink:#e7ebf3;--ink-2:#8e9ab3;--rule:#232b3a;
+    --accent:#5b8dff;--accent-soft:#16243d;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b0e14;--paper-2:#12161f;--ink:#e7ebf3;--ink-2:#8e9ab3;--rule:#232b3a;
+  --accent:#5b8dff;--accent-soft:#16243d;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px -16px rgba(0,0,0,.8);
+}
+:root[data-theme="light"]{
+  --paper:#f4f6fa;--paper-2:#ffffff;--ink:#111725;--ink-2:#48536b;--rule:#d8dee9;
+  --accent:#135bec;--accent-soft:#e5ecfd;
+  --shadow:0 1px 2px rgba(17,23,37,.06),0 8px 24px -12px rgba(17,23,37,.18);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums}
+h1,h2,h3,h4{margin:0;text-wrap:balance;letter-spacing:-.015em}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ============================================================
+   SHELL LAYOUT
+   ============================================================ */
+.wrap{display:grid;grid-template-columns:266px minmax(0,1fr);min-height:100vh}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}}
+
+.rail{border-right:1px solid var(--rule);background:var(--paper-2);
+  padding:22px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+@media (max-width:900px){.rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--rule)}}
+.rail-head{padding:0 20px 18px;border-bottom:1px solid var(--rule);margin-bottom:14px}
+.mark{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;letter-spacing:-.02em}
+.mark i{display:grid;place-items:center;width:26px;height:26px;border-radius:7px;
+  background:var(--app-primary);color:#fff;font-size:14px;font-style:normal}
+.mark b{font-weight:800}
+.mark span{color:var(--app-primary)}
+.rail-sub{margin-top:7px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.grp{padding:0 12px;margin-bottom:4px}
+.grp-t{padding:12px 8px 6px;font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-2)}
+.nav-b{display:flex;width:100%;align-items:baseline;gap:9px;padding:7px 9px;border:0;
+  border-radius:6px;background:none;color:var(--ink);font:inherit;font-size:13.5px;
+  text-align:left;cursor:pointer;transition:background .12s}
+.nav-b:hover{background:var(--accent-soft)}
+.nav-b[aria-current="true"]{background:var(--accent);color:#fff;font-weight:600}
+.nav-b[aria-current="true"] em{color:rgba(255,255,255,.72)}
+.nav-b em{flex:none;width:26px;font-style:normal;font-size:10.5px;font-weight:700;
+  font-family:var(--mono);color:var(--ink-2)}
+
+/* ============================================================
+   CANVAS + SCREEN FRAME
+   ============================================================ */
+.canvas{padding:26px 30px 70px;min-width:0}
+@media (max-width:700px){.canvas{padding:18px 14px 50px}}
+.intro{max-width:74ch;margin-bottom:26px}
+.intro h1{font-size:clamp(23px,1.4vw + 18px,31px);font-weight:800}
+.intro p{margin-top:9px;color:var(--ink-2);font-size:14.5px}
+.tag{display:inline-flex;align-items:center;gap:6px;margin-bottom:11px;padding:3px 9px;
+  border:1px solid var(--rule);border-radius:100px;background:var(--paper-2);
+  font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+
+.screen{display:none}
+.screen[data-active="true"]{display:block}
+.s-head{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;
+  justify-content:space-between;margin-bottom:14px}
+.s-head h2{font-size:20px;font-weight:800}
+.s-meta{margin-top:5px;font-size:12.5px;color:var(--ink-2);font-family:var(--mono)}
+.xform{max-width:88ch;margin-bottom:16px;padding:12px 15px;border:1px solid var(--rule);
+  border-left:3px solid var(--accent);border-radius:0 var(--r) var(--r) 0;
+  background:var(--paper-2);font-size:13.5px;color:var(--ink-2)}
+.xform b{color:var(--ink);font-weight:700}
+
+/* browser chrome around each app screen */
+.frame{border:1px solid var(--rule);border-radius:11px;overflow:hidden;
+  box-shadow:var(--shadow);background:var(--app-bg)}
+.chrome{display:flex;align-items:center;gap:8px;padding:9px 13px;
+  border-bottom:1px solid var(--app-border);background:#0b0f18}
+.dots{display:flex;gap:5px}
+.dots i{width:9px;height:9px;border-radius:50%;background:#33405c}
+.url{flex:1;padding:3px 11px;border-radius:5px;background:#131b2a;color:#7b8bab;
+  font-family:var(--mono);font-size:11px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+/* ============================================================
+   APP PRIMITIVES (inside .app — CarBid dark system)
+   ============================================================ */
+.app{background:var(--app-bg);color:var(--app-text);font-size:13.5px;min-width:0}
+.app *{box-sizing:border-box}
+.app h1,.app h2,.app h3,.app h4{color:var(--app-text)}
+.app-grid{display:grid;grid-template-columns:198px minmax(0,1fr)}
+@media (max-width:760px){.app-grid{grid-template-columns:1fr}}
+
+/* left product nav — replaces the mobile bottom tab bar */
+.side{border-right:1px solid var(--app-border);background:#0d131f;padding:16px 0;
+  display:flex;flex-direction:column;gap:2px;min-height:520px}
+@media (max-width:760px){.side{min-height:0;flex-direction:row;overflow-x:auto;
+  border-right:0;border-bottom:1px solid var(--app-border);padding:10px}}
+.side .mark{padding:0 16px 16px;font-size:15px;color:var(--app-text)}
+@media (max-width:760px){.side .mark{display:none}}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 16px;color:var(--app-muted);
+  font-size:13px;font-weight:500;white-space:nowrap;border-left:2px solid transparent;
+  cursor:default}
+.s-item[data-on="true"]{color:var(--app-text);background:rgba(19,91,236,.13);
+  border-left-color:var(--app-primary);font-weight:600}
+.s-item u{width:16px;height:16px;flex:none;border-radius:4px;background:currentColor;
+  opacity:.5;text-decoration:none}
+.s-item[data-on="true"] u{opacity:1;background:var(--app-primary)}
+.side-foot{margin-top:auto;padding:14px 16px 0;border-top:1px solid var(--app-border);
+  color:var(--app-muted);font-size:11px}
+@media (max-width:760px){.side-foot{display:none}}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:14px;padding:13px 20px;
+  border-bottom:1px solid var(--app-border);background:rgba(16,22,34,.86)}
+.top h2{font-size:16px;font-weight:700;flex:none}
+.crumb{color:var(--app-muted);font-size:12px}
+.spacer{flex:1}
+.main{padding:20px}
+@media (max-width:700px){.main{padding:14px}}
+
+/* search + inputs */
+.search{display:flex;align-items:center;gap:8px;flex:1;max-width:420px;padding:7px 11px;
+  border:1px solid var(--app-border);border-radius:var(--r);background:var(--app-surface);
+  color:var(--app-muted);font-size:12.5px}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld>span{font-size:11.5px;font-weight:600;color:var(--app-muted);letter-spacing:.02em}
+.inp{padding:9px 11px;border:1px solid var(--app-border);border-radius:var(--r);
+  background:var(--app-bg);color:var(--app-text);font-family:var(--ui);font-size:13px}
+.inp[data-ph="true"]{color:#5d6e91}
+.inp-pre{display:flex;align-items:center;border:1px solid var(--app-border);
+  border-radius:var(--r);background:var(--app-bg);overflow:hidden}
+.inp-pre i{padding:0 10px;color:var(--app-muted);font-style:normal;font-size:12.5px;
+  border-right:1px solid var(--app-border);align-self:stretch;display:grid;place-items:center}
+.inp-pre .inp{border:0;flex:1;background:none}
+.hint{font-size:11.5px;color:var(--app-muted);line-height:1.45}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+@media (max-width:700px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 15px;
+  border:1px solid var(--app-border);border-radius:var(--r);background:var(--app-surface);
+  color:var(--app-text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  transition:background .12s,border-color .12s}
+.btn:hover{background:var(--app-surface-2);border-color:#41577f}
+.btn-p{background:var(--app-primary);border-color:var(--app-primary);color:var(--app-primary-ink)}
+.btn-p:hover{background:#0f4ecb;border-color:#0f4ecb}
+.btn-g{background:none;border-color:transparent;color:var(--app-muted);font-weight:500}
+.btn-g:hover{background:var(--app-surface);color:var(--app-text)}
+.btn-lg{padding:12px 20px;font-size:14px}
+.btn-blk{width:100%}
+
+/* cards / surfaces */
+.card{border:1px solid var(--app-border);border-radius:var(--r);background:var(--app-surface)}
+.card-p{padding:16px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 16px;border-bottom:1px solid var(--app-border)}
+.card-h h3{font-size:13.5px;font-weight:700}
+.sec-t{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--app-muted);margin-bottom:11px}
+
+/* pills — state encoded in form as well as colour */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2.5px 8px;border-radius:100px;
+  font-size:11px;font-weight:700;letter-spacing:.02em;border:1px solid}
+.pill u{width:5px;height:5px;border-radius:50%;background:currentColor;text-decoration:none}
+.pill-live{color:#7ee2a8;border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.13)}
+.pill-warn{color:#fcd34d;border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.13)}
+.pill-dngr{color:#fca5a5;border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.13)}
+.pill-info{color:#9dc0ff;border-color:rgba(19,91,236,.45);background:rgba(19,91,236,.15)}
+.pill-mute{color:var(--app-muted);border-color:var(--app-border);background:var(--app-bg)}
+
+/* money + data */
+.money{font-family:var(--mono);font-weight:700;letter-spacing:-.02em}
+.big{font-size:27px;line-height:1.1}
+.mono{font-family:var(--mono);font-size:12px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;font-size:12.5px}
+.dl dt{color:var(--app-muted)}
+.dl dd{margin:0;text-align:right;font-weight:600}
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:13px;padding:12px 16px;
+  border-bottom:1px solid var(--app-border)}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--app-surface-2)}
+table.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{padding:9px 13px;text-align:left;font-size:10.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--app-muted);
+  border-bottom:1px solid var(--app-border);white-space:nowrap}
+.tbl td{padding:12px 13px;border-bottom:1px solid var(--app-border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover{background:var(--app-surface-2)}
+.num{text-align:right;font-family:var(--mono)}
+.scroll-x{overflow-x:auto}
+
+/* vehicle thumb placeholder — gradient stands in for photography */
+.ph{border-radius:var(--r);background:
+  radial-gradient(120% 90% at 22% 12%,#2c3d5e 0%,#161f30 55%,#0e1420 100%);
+  border:1px solid var(--app-border);position:relative;overflow:hidden}
+.ph::after{content:attr(data-l);position:absolute;left:10px;bottom:8px;
+  font-family:var(--mono);font-size:10px;color:#6d7fa3;letter-spacing:.04em}
+.ph-16{aspect-ratio:16/10}
+.veh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(216px,1fr));gap:15px}
+.vcard{border:1px solid var(--app-border);border-radius:var(--r);background:var(--app-surface);
+  overflow:hidden;transition:border-color .14s,transform .14s}
+.vcard:hover{border-color:var(--app-primary);transform:translateY(-2px)}
+.vcard .ph{border:0;border-radius:0}
+.vcard-b{padding:11px 13px 13px}
+.vcard h4{font-size:13.5px;font-weight:700}
+.vcard .sub{margin-top:2px;color:var(--app-muted);font-size:11.5px}
+.vcard-f{display:flex;align-items:flex-end;justify-content:space-between;margin-top:10px;gap:8px}
+.vcard-f small{display:block;color:var(--app-muted);font-size:10px;letter-spacing:.05em;
+  text-transform:uppercase}
+
+/* filter rail — the mobile modal sheet becomes persistent */
+.filters{border-right:1px solid var(--app-border);padding:18px 16px;background:#0d131f;
+  display:flex;flex-direction:column;gap:19px;min-width:0}
+.fgrp{display:flex;flex-direction:column;gap:9px}
+.fgrp>strong{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--app-muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:4.5px 10px;border:1px solid var(--app-border);border-radius:100px;
+  background:var(--app-bg);color:var(--app-muted);font-size:11.5px;font-weight:600;cursor:pointer}
+.chip:hover{border-color:#41577f;color:var(--app-text)}
+.chip[data-on="true"]{background:var(--app-primary);border-color:var(--app-primary);color:#fff}
+.opt{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--app-muted);cursor:pointer}
+.opt u{width:14px;height:14px;flex:none;border:1px solid var(--app-border);border-radius:50%;
+  text-decoration:none}
+.opt[data-on="true"]{color:var(--app-text);font-weight:600}
+.opt[data-on="true"] u{border-color:var(--app-primary);background:radial-gradient(circle,
+  var(--app-primary) 0 45%,transparent 46%)}
+.opt-sq u{border-radius:4px}
+.opt-sq[data-on="true"] u{background:var(--app-primary);border-color:var(--app-primary)}
+.slider{margin:3px 0 1px}
+.slider-t{height:4px;border-radius:100px;background:var(--app-border);position:relative}
+.slider-f{position:absolute;height:100%;border-radius:100px;background:var(--app-primary)}
+.slider-h{position:absolute;top:50%;width:13px;height:13px;margin-top:-6.5px;margin-left:-6.5px;
+  border-radius:50%;background:#fff;border:2.5px solid var(--app-primary)}
+.slider-l{display:flex;justify-content:space-between;margin-top:7px;font-size:11px;
+  color:var(--app-muted);font-family:var(--mono)}
+
+/* stepper for the sell wizard */
+.steps{display:flex;align-items:center;gap:0;padding:15px 20px;
+  border-bottom:1px solid var(--app-border);background:#0d131f;overflow-x:auto}
+.step{display:flex;align-items:center;gap:9px;padding-right:14px;white-space:nowrap}
+.step u{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  border:1px solid var(--app-border);background:var(--app-bg);color:var(--app-muted);
+  font-size:11px;font-weight:700;font-family:var(--mono);text-decoration:none;flex:none}
+.step span{font-size:12.5px;color:var(--app-muted);font-weight:500}
+.step[data-st="done"] u{background:rgba(34,197,94,.16);border-color:rgba(34,197,94,.45);color:#7ee2a8}
+.step[data-st="done"] span{color:var(--app-text)}
+.step[data-st="now"] u{background:var(--app-primary);border-color:var(--app-primary);color:#fff}
+.step[data-st="now"] span{color:var(--app-text);font-weight:700}
+.step-line{width:34px;height:1px;background:var(--app-border);margin-right:14px;flex:none}
+@media (max-width:820px){.step-line{width:16px;margin-right:9px}.step{padding-right:9px}}
+
+/* two-column work layouts */
+.split{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:20px;align-items:start}
+.split-w{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@media (max-width:980px){.split,.split-w{grid-template-columns:1fr}}
+.sticky{position:sticky;top:16px}
+.stack{display:flex;flex-direction:column;gap:15px}
+.stack-s{display:flex;flex-direction:column;gap:9px}
+.flow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.centered{max-width:520px;margin:0 auto;padding:34px 0;text-align:center}
+
+/* callout */
+.note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--r);
+  border:1px solid rgba(19,91,236,.4);background:rgba(19,91,236,.1);font-size:12.5px;
+  color:#c9d9ff;line-height:1.5}
+.note u{flex:none;width:16px;height:16px;border-radius:50%;background:var(--app-primary);
+  text-decoration:none;margin-top:1px}
+.note-ok{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.09);color:#b6ecca}
+.note-ok u{background:var(--app-live)}
+
+/* countdown */
+.clock{display:flex;gap:5px;align-items:center;font-family:var(--mono);font-weight:700}
+.clock b{padding:5px 8px;border-radius:5px;background:var(--app-bg);
+  border:1px solid var(--app-border);font-size:15px}
+.clock i{color:var(--app-muted);font-style:normal}
+
+/* avatar */
+.av{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;
+  background:var(--app-surface-2);border:1px solid var(--app-border);
+  font-size:11px;font-weight:700;color:var(--app-muted);font-family:var(--mono)}
+.av-lg{width:52px;height:52px;font-size:16px}
+
+/* upload dropzone */
+.drop{display:flex;align-items:center;gap:12px;padding:15px;border-radius:var(--r);
+  border:1.5px dashed var(--app-border);background:var(--app-bg)}
+.drop u{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:var(--r);
+  background:var(--app-surface-2);text-decoration:none;color:var(--app-muted);font-size:14px}
+.file{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:var(--r);
+  border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);font-size:12.5px}
+.file u{width:16px;height:16px;flex:none;border-radius:50%;background:var(--app-live);
+  text-decoration:none}
+.file b{flex:1;font-weight:600;font-family:var(--mono);font-size:11.5px}
+
+/* toggle */
+.tog{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;
+  border-bottom:1px solid var(--app-border)}
+.tog:last-child{border-bottom:0}
+.tog em{display:block;font-style:normal;font-size:11.5px;color:var(--app-muted);margin-top:2px}
+.sw{width:38px;height:21px;flex:none;border-radius:100px;background:var(--app-border);
+  position:relative;cursor:pointer}
+.sw::after{content:"";position:absolute;top:2.5px;left:2.5px;width:16px;height:16px;
+  border-radius:50%;background:#fff;transition:left .16s}
+.sw[data-on="true"]{background:var(--app-primary)}
+.sw[data-on="true"]::after{left:19.5px}
+
+/* footer note */
+.foot{max-width:80ch;margin:34px auto 0;padding-top:20px;border-top:1px solid var(--rule);
+  font-size:12.5px;color:var(--ink-2)}
+.foot h3{font-size:14px;color:var(--ink);margin-bottom:8px}
+.foot ul{margin:7px 0 0;padding-left:19px}
+.foot li{margin-bottom:5px}
+</style>
+
+<div class="wrap">
+<nav class="rail" aria-label="Screen index">
+  <div class="rail-head">
+    <div class="mark"><i>C</i><b>Car<span>Bid</span></b></div>
+    <p class="rail-sub">19 desktop web screens translated from the 18 mobile Stitch designs, on CarBid's own design system.</p>
+  </div>
+  <div class="grp"><div class="grp-t">Identity</div>
+    <button class="nav-b" data-go="w01" aria-current="true"><em>W01</em>Sign in</button></div>
+  <div class="grp"><div class="grp-t">Discovery</div>
+    <button class="nav-b" data-go="w02"><em>W02</em>Browse auctions</button>
+    <button class="nav-b" data-go="w03"><em>W03</em>Filter &amp; sort</button></div>
+  <div class="grp"><div class="grp-t">Bidding</div>
+    <button class="nav-b" data-go="w04"><em>W04</em>Vehicle detail</button>
+    <button class="nav-b" data-go="w05"><em>W05</em>My bids</button></div>
+  <div class="grp"><div class="grp-t">Post-auction</div>
+    <button class="nav-b" data-go="w06"><em>W06</em>Auction won</button>
+    <button class="nav-b" data-go="w07"><em>W07</em>Checkout</button></div>
+  <div class="grp"><div class="grp-t">Selling</div>
+    <button class="nav-b" data-go="w08"><em>W08</em>Step 1 · Basics</button>
+    <button class="nav-b" data-go="w09"><em>W09</em>Step 2 · Details</button>
+    <button class="nav-b" data-go="w10"><em>W10</em>Step 3 · Condition</button>
+    <button class="nav-b" data-go="w11"><em>W11</em>Step 4 · Review</button>
+    <button class="nav-b" data-go="w12"><em>W12</em>Submitted</button></div>
+  <div class="grp"><div class="grp-t">Engagement</div>
+    <button class="nav-b" data-go="w13"><em>W13</em>Notifications</button>
+    <button class="nav-b" data-go="w14"><em>W14</em>Profile &amp; settings</button></div>
+  <div class="grp"><div class="grp-t">Financing</div>
+    <button class="nav-b" data-go="w15"><em>W15</em>Compare lenders</button>
+    <button class="nav-b" data-go="w16"><em>W16</em>Lease application</button>
+    <button class="nav-b" data-go="w17"><em>W17</em>Assigned agent</button>
+    <button class="nav-b" data-go="w18"><em>W18</em>Approved &amp; bid</button></div>
+  <div class="grp"><div class="grp-t">Dealer (B2B)</div>
+    <button class="nav-b" data-go="w19"><em>W19</em>Facility onboarding</button></div>
+</nav>
+
+<main class="canvas">
+<div class="intro">
+  <span class="tag">Design translation</span>
+  <h1>CarBid on the web</h1>
+  <p>Every screen below is the desktop counterpart of a mobile Stitch design, built on CarBid's existing tokens — <code class="mono">#135bec</code> on <code class="mono">#101622</code>, 8px radii, Manrope's role filled by a geometric system stack. Desktop is not the mobile layout made wider: the bottom tab bar becomes a persistent left rail, the filter sheet stops being a modal, and stacked lease cards become a real comparison table. All screens show the four resolved decisions — CarBid branding, the blue system, plain dollar amounts, and the four-step sell wizard.</p>
+</div>
+
+<!-- ============================== W01 SIGN IN ============================== -->
+<section class="screen" id="w01" data-active="true">
+  <div class="s-head"><div>
+    <h2>Sign in</h2>
+    <p class="s-meta">from S01 · Car Auction Login · 53b74847</p>
+  </div><span class="pill pill-info"><u></u>Rebranded + repalette</span></div>
+  <p class="xform"><b>Mobile → web:</b> a full-bleed single column becomes a split canvas. The left half carries the value proposition the mobile screen had no room for — live lot count and settlement assurance, which matter when the visitor is about to bid six figures. The form holds its narrow measure on the right rather than stretching to the viewport.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sign-in</div></div>
+    <div class="app"><div style="display:grid;grid-template-columns:1.05fr .95fr;min-height:540px">
+      <div style="padding:38px 40px;border-right:1px solid var(--app-border);
+        background:radial-gradient(115% 85% at 12% 8%,#1b2b45 0%,transparent 60%),
+        linear-gradient(155deg,#16202f 0%,#101622 62%);display:flex;flex-direction:column">
+        <div class="mark" style="color:var(--app-text);font-size:19px"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div style="margin-top:auto">
+          <h1 style="font-size:31px;font-weight:800;line-height:1.15;max-width:19ch">Premium auctions, settled properly.</h1>
+          <p style="margin-top:13px;color:var(--app-muted);font-size:13.5px;max-width:44ch">Bid on inspected luxury and performance vehicles. Every lot carries a condition report, a verified VIN and fully insured transit.</p>
+          <div class="flow" style="margin-top:26px;gap:26px">
+            <div><div class="money" style="font-size:20px">242</div><small style="color:var(--app-muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Live lots</small></div>
+            <div><div class="money" style="font-size:20px">$2.5M</div><small style="color:var(--app-muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Top lot today</small></div>
+            <div><div class="money" style="font-size:20px">24h</div><small style="color:var(--app-muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Settlement window</small></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:38px 40px;display:flex;flex-direction:column;justify-content:center">
+        <div style="max-width:340px;width:100%;margin:0 auto">
+          <h2 style="font-size:21px;font-weight:800">Log in to start bidding</h2>
+          <p class="hint" style="margin-top:6px">New here? <a href="#" style="color:#5b8dff;font-weight:600">Create an account</a></p>
+          <div class="stack" style="margin-top:22px">
+            <label class="fld"><span>Email address</span>
+              <input class="inp" type="email" value="alex.sterling@gmail.com"></label>
+            <label class="fld"><span style="display:flex;justify-content:space-between">Password <a href="#" style="color:#5b8dff;font-weight:600;font-size:11px">Forgot?</a></span>
+              <div class="inp-pre"><input class="inp" type="password" value="ozymandias42"><i style="border:0;border-left:1px solid var(--app-border)">Show</i></div></label>
+            <button class="btn btn-p btn-lg btn-blk">Sign in</button>
+            <div class="flow" style="gap:11px;margin:3px 0"><span style="flex:1;height:1px;background:var(--app-border)"></span><span class="hint">or continue with</span><span style="flex:1;height:1px;background:var(--app-border)"></span></div>
+            <div class="grid2" style="gap:10px">
+              <button class="btn">Google</button><button class="btn">Apple</button></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W02 BROWSE ============================== -->
+<section class="screen" id="w02">
+  <div class="s-head"><div>
+    <h2>Browse auctions</h2>
+    <p class="s-meta">from S02 · Auction Listings Grid · 5713e9ea</p>
+  </div><span class="pill pill-info"><u></u>Filters no longer modal</span></div>
+  <p class="xform"><b>Mobile → web:</b> three structural changes. The bottom tab bar becomes a persistent left rail, so navigation is always visible instead of competing with content. The filter sheet — a full-screen modal on mobile — becomes a standing rail, so users see what is filtered while they read results. And the 2-up card grid becomes 4-up with a density toggle, turning 242 lots from an endless scroll into something scannable.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/auctions?status=live&amp;sort=ending</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item" data-on="true"><u></u>Explore</div>
+        <div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div>
+        <div class="s-item"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+        <div class="side-foot">Gold tier · Alex Sterling<br>v4.12.0</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top">
+          <div class="search"><span>⌕</span><span>Search make, model, or year…</span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-g">Alerts · 3</button>
+          <div class="av">AS</div>
+        </div>
+        <div style="display:grid;grid-template-columns:214px minmax(0,1fr)">
+          <aside class="filters">
+            <div class="fgrp"><strong>Sort by</strong>
+              <div class="opt" data-on="true"><u></u>Ending soonest</div>
+              <div class="opt"><u></u>Newest</div>
+              <div class="opt"><u></u>Price: low to high</div>
+              <div class="opt"><u></u>Price: high to low</div>
+            </div>
+            <div class="fgrp"><strong>Price range</strong>
+              <div class="slider"><div class="slider-t">
+                <div class="slider-f" style="left:9%;width:41%"></div>
+                <div class="slider-h" style="left:9%"></div><div class="slider-h" style="left:50%"></div>
+              </div><div class="slider-l"><span>$0</span><span>$5M+</span></div></div>
+              <div class="hint" style="color:var(--app-text);font-weight:600">$450K – $2.5M</div>
+            </div>
+            <div class="fgrp"><strong>Category</strong>
+              <div class="chips"><span class="chip" data-on="true">Cars</span><span class="chip">Vans</span><span class="chip">Bikes</span><span class="chip">Trucks</span></div>
+            </div>
+            <div class="fgrp"><strong>Body style</strong>
+              <div class="opt opt-sq" data-on="true"><u></u>Coupe</div>
+              <div class="opt opt-sq"><u></u>Sedan</div>
+              <div class="opt opt-sq"><u></u>SUV</div>
+              <div class="opt opt-sq"><u></u>Convertible</div>
+            </div>
+            <div class="fgrp"><strong>Brand</strong>
+              <div class="chips"><span class="chip" data-on="true">Porsche</span><span class="chip">Ferrari</span><span class="chip">BMW</span><span class="chip">McLaren</span><span class="chip">+11</span></div>
+            </div>
+            <button class="btn btn-g" style="justify-content:flex-start;padding-left:0">Reset all filters</button>
+          </aside>
+          <div class="main">
+            <div class="flow" style="justify-content:space-between;margin-bottom:15px">
+              <div><h3 style="font-size:16px;font-weight:800">Live auctions</h3>
+                <p class="hint" style="margin-top:2px">242 lots · 6 shown · filtered by 3 criteria</p></div>
+              <div class="flow"><button class="btn btn-g">Grid</button><button class="btn">List</button></div>
+            </div>
+            <div class="veh-grid">
+              <article class="vcard"><div class="ph ph-16" data-l="911 GT3 / 2023"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-live"><u></u>Live now</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">Porsche 911 GT3</h4><p class="sub">2023 · 1,200 mi · Coupe</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$1,200,000</div></div>
+                    <span class="pill pill-mute">14 bids</span></div></div></article>
+              <article class="vcard"><div class="ph ph-16" data-l="SF90 Stradale / 2022"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-warn"><u></u>Ends in 2h</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">Ferrari SF90 Stradale</h4><p class="sub">2022 · New · Coupe</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$2,500,000</div></div>
+                    <span class="pill pill-mute">14 bids</span></div></div></article>
+              <article class="vcard"><div class="ph ph-16" data-l="Urus / 2023"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-live"><u></u>Live now</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">Lamborghini Urus</h4><p class="sub">2023 · 4,000 mi · SUV</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$800,000</div></div>
+                    <span class="pill pill-mute">9 bids</span></div></div></article>
+              <article class="vcard"><div class="ph ph-16" data-l="M4 Competition / 2024"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-live"><u></u>Live now</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">BMW M4 Competition</h4><p class="sub">2024 · 250 mi · Coupe</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$450,000</div></div>
+                    <span class="pill pill-mute">21 bids</span></div></div></article>
+              <article class="vcard"><div class="ph ph-16" data-l="720S / 2021"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-dngr"><u></u>Ends in 14m</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">McLaren 720S</h4><p class="sub">2021 · 3,100 mi · Coupe</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$1,100,000</div></div>
+                    <span class="pill pill-mute">31 bids</span></div></div></article>
+              <article class="vcard"><div class="ph ph-16" data-l="Vantage / 2023"></div>
+                <div class="vcard-b"><div class="flow" style="justify-content:space-between">
+                  <span class="pill pill-live"><u></u>Live now</span><span class="hint">♡</span></div>
+                  <h4 style="margin-top:8px">Aston Martin Vantage</h4><p class="sub">2023 · 1,500 mi · Coupe</p>
+                  <div class="vcard-f"><div><small>Current bid</small><div class="money" style="font-size:15px">$950,000</div></div>
+                    <span class="pill pill-mute">7 bids</span></div></div></article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W03 FILTER ============================== -->
+<section class="screen" id="w03">
+  <div class="s-head"><div>
+    <h2>Filter &amp; sort</h2>
+    <p class="s-meta">from S03 · Filter and Sort Options · e7c17a07</p>
+  </div><span class="pill pill-live"><u></u>"Millions" units removed</span></div>
+  <p class="xform"><b>Mobile → web:</b> on mobile this is a whole screen you leave the results to reach. On desktop it has no reason to exist as a destination — it is the rail in W02. Shown here expanded, with every control the mobile sheet had plus the year range it needed room for. The <b>corrected currency scale</b> lives here: <code class="mono">0M–500M+</code> became <code class="mono">$0–$5M+</code>, and the active range reads <code class="mono">$450K – $2.5M</code> instead of <code class="mono">12M - 450M</code>.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/auctions — filter panel</div></div>
+    <div class="app"><div class="main" style="max-width:760px">
+      <div class="card">
+        <div class="card-h"><h3>Refine 242 lots</h3><button class="btn btn-g">Reset</button></div>
+        <div class="card-p" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div class="fgrp"><strong>Sort by</strong>
+            <div class="opt" data-on="true"><u></u>Ending soonest</div>
+            <div class="opt"><u></u>Newest listed</div>
+            <div class="opt"><u></u>Price: low to high</div>
+            <div class="opt"><u></u>Price: high to low</div>
+            <div class="opt"><u></u>Year: new to old</div>
+          </div>
+          <div class="stack">
+            <div class="fgrp"><strong>Price range</strong>
+              <div class="slider"><div class="slider-t">
+                <div class="slider-f" style="left:9%;width:41%"></div>
+                <div class="slider-h" style="left:9%"></div><div class="slider-h" style="left:50%"></div>
+              </div><div class="slider-l"><span>$0</span><span>$5M+</span></div></div>
+              <div style="font-weight:700;font-size:13px">$450K – $2.5M</div>
+            </div>
+            <div class="fgrp"><strong>Year</strong>
+              <div class="slider"><div class="slider-t">
+                <div class="slider-f" style="left:75%;width:25%"></div>
+                <div class="slider-h" style="left:75%"></div><div class="slider-h" style="left:100%"></div>
+              </div><div class="slider-l"><span>2000</span><span>2024</span></div></div>
+              <div style="font-weight:700;font-size:13px">2018 – 2024</div>
+            </div>
+          </div>
+          <div class="fgrp"><strong>Brand</strong>
+            <div class="chips"><span class="chip" data-on="true">Porsche</span><span class="chip">Ferrari</span>
+              <span class="chip">BMW</span><span class="chip">McLaren</span><span class="chip">Lamborghini</span>
+              <span class="chip">Aston Martin</span><span class="chip">Mercedes</span><span class="chip">+8 more</span></div>
+          </div>
+          <div class="fgrp"><strong>Body style</strong>
+            <div class="chips"><span class="chip" data-on="true">Coupe</span><span class="chip">Sedan</span>
+              <span class="chip">SUV</span><span class="chip">Convertible</span><span class="chip">Hatchback</span>
+              <span class="chip">Wagon</span><span class="chip">Truck</span></div>
+          </div>
+        </div>
+        <div class="card-h" style="border-top:1px solid var(--app-border);border-bottom:0">
+          <p class="hint">3 filters active</p>
+          <button class="btn btn-p">Show 1,248 results</button>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px"><u></u><div><b>Resolved defect 11.6.</b> The mobile sheet labelled this section "Price Range (Millions)" with bounds 0M–500M+, describing vehicles up to $500 million against real inventory of $450K–$2.5M. All prices are now plain dollar amounts with K/M abbreviations.</div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W04 VEHICLE DETAIL ============================== -->
+<section class="screen" id="w04">
+  <div class="s-head"><div>
+    <h2>Vehicle detail &amp; bidding</h2>
+    <p class="s-meta">from S04 · Vehicle Details and Bidding · b06fd6b1</p>
+  </div><span class="pill pill-warn"><u></u>Bid rail always visible</span></div>
+  <p class="xform"><b>Mobile → web:</b> the most consequential translation. On mobile the bid control sits 2,600px down a scrolling page — you can be reading the condition report while the clock runs out. On desktop it becomes a <b>sticky right rail</b>: countdown, current bid and Place bid stay on screen no matter how far you read. The bid history moves from a truncated preview to a full ledger, because desk-bound bidders actually audit it.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/lots/FER-SF90-0042</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item" data-on="true"><u></u>Explore</div>
+        <div class="s-item"><u></u>My bids</div><div class="s-item"><u></u>Sell a car</div>
+        <div class="s-item"><u></u>Leasing</div><div class="s-item"><u></u>Profile</div>
+        <div class="side-foot">Gold tier · Alex Sterling</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><p class="crumb">Explore / Coupes / <span style="color:var(--app-text)">Ferrari SF90 Stradale</span></p>
+          <div class="spacer"></div><button class="btn btn-g">Share</button><button class="btn">♡ Watch</button></div>
+        <div class="main"><div class="split">
+          <div class="stack">
+            <div class="ph" style="aspect-ratio:16/9" data-l="HERO — Rosso Corsa / Nero interior"></div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px">
+              <div class="ph" style="aspect-ratio:4/3" data-l="front"></div>
+              <div class="ph" style="aspect-ratio:4/3" data-l="rear"></div>
+              <div class="ph" style="aspect-ratio:4/3" data-l="cabin"></div>
+              <div class="ph" style="aspect-ratio:4/3" data-l="engine"></div>
+              <div class="ph" style="aspect-ratio:4/3" data-l="+18"></div>
+            </div>
+            <div class="card card-p">
+              <div class="sec-t">Key specifications</div>
+              <div class="grid3">
+                <div><small class="hint">Mileage</small><div style="font-weight:700;margin-top:2px">1,200 mi</div></div>
+                <div><small class="hint">Engine</small><div style="font-weight:700;margin-top:2px">4.0L V8 Hybrid</div></div>
+                <div><small class="hint">Transmission</small><div style="font-weight:700;margin-top:2px">8-Speed DCT</div></div>
+                <div><small class="hint">Drivetrain</small><div style="font-weight:700;margin-top:2px">AWD</div></div>
+                <div><small class="hint">Body style</small><div style="font-weight:700;margin-top:2px">Coupe</div></div>
+                <div><small class="hint">Location</small><div style="font-weight:700;margin-top:2px">Los Angeles, CA</div></div>
+              </div>
+            </div>
+            <div class="card card-p">
+              <div class="sec-t">Vehicle overview</div>
+              <p style="color:#c9d3e6;line-height:1.6">This 2022 Ferrari SF90 Stradale represents the pinnacle of Maranello's engineering, blending a twin-turbocharged 4.0L V8 with three electric motors to produce a staggering 986 horsepower. Finished in Rosso Corsa with a Nero leather interior, the car has covered 1,200 miles since delivery and retains its full factory warranty.</p>
+              <div class="flow" style="margin-top:14px">
+                <button class="btn">Read condition report (PDF)</button>
+                <button class="btn btn-g">Service history · 4 docs</button></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Bid history</h3><span class="pill pill-mute">14 bids</span></div>
+              <div class="scroll-x"><table class="tbl">
+                <thead><tr><th>Bidder</th><th>Placed</th><th class="num">Amount</th><th class="num">Increment</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="flow"><div class="av">JD</div><span style="font-weight:600">John_Doe92</span></div></td>
+                    <td class="hint">2 mins ago</td><td class="num money">$2,500,000</td><td class="num hint">+$15,000</td></tr>
+                  <tr><td><div class="flow"><div class="av">AS</div><span style="font-weight:600">A_Smyth</span></div></td>
+                    <td class="hint">15 mins ago</td><td class="num money">$2,485,000</td><td class="num hint">+$10,000</td></tr>
+                  <tr><td><div class="flow"><div class="av">RK</div><span style="font-weight:600">R_Kaur</span></div></td>
+                    <td class="hint">41 mins ago</td><td class="num money">$2,475,000</td><td class="num hint">+$25,000</td></tr>
+                  <tr><td><div class="flow"><div class="av">JD</div><span style="font-weight:600">John_Doe92</span></div></td>
+                    <td class="hint">1 hr ago</td><td class="num money">$2,450,000</td><td class="num hint">+$50,000</td></tr>
+                </tbody></table></div>
+            </div>
+          </div>
+          <div class="stack sticky">
+            <div class="card card-p">
+              <div class="flow" style="justify-content:space-between">
+                <span class="pill pill-live"><u></u>Live auction</span>
+                <span class="pill pill-mute">Lot #FER-SF90-0042</span></div>
+              <h2 style="margin-top:12px;font-size:19px;line-height:1.25">2022 Ferrari SF90 Stradale</h2>
+              <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--app-border)">
+                <small class="hint">Current bid</small>
+                <div class="money big" style="margin-top:3px">$2,500,000</div>
+                <div class="flow" style="margin-top:7px"><span class="pill pill-live"><u></u>Reserve met</span></div>
+              </div>
+              <div style="margin-top:15px;padding-top:14px;border-top:1px solid var(--app-border)">
+                <small class="hint">Time remaining</small>
+                <div class="clock" style="margin-top:6px"><b>02</b><i>:</i><b>14</b><i>:</i><b>35</b></div>
+                <p class="hint" style="margin-top:6px">Ends Sun 4:00 PM PT · soft close extends 2 min on late bids</p>
+              </div>
+              <div style="margin-top:15px;padding-top:14px;border-top:1px solid var(--app-border)">
+                <div class="sec-t" style="margin-bottom:8px">Your bid</div>
+                <div class="chips" style="margin-bottom:10px">
+                  <span class="chip" data-on="true">+$10,000</span><span class="chip">+$25,000</span>
+                  <span class="chip">+$50,000</span><span class="chip">+$100,000</span></div>
+                <div class="inp-pre"><i>$</i><input class="inp" value="2,510,000"></div>
+                <p class="hint" style="margin-top:7px">Minimum next bid $2,510,000</p>
+                <button class="btn btn-p btn-lg btn-blk" style="margin-top:11px">Review &amp; place bid</button>
+                <p class="hint" style="margin-top:9px;text-align:center">Bids are binding. 5% buyer's premium applies.</p>
+              </div>
+            </div>
+            <div class="note"><u></u><div>Your approved lease covers up to <b>$205,000</b> on this lot. Bidding above that raises your down payment.</div></div>
+          </div>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W05 MY BIDS ============================== -->
+<section class="screen" id="w05">
+  <div class="s-head"><div>
+    <h2>My bids</h2>
+    <p class="s-meta">from S05 · My Bids Dashboard · 12190c2f</p>
+  </div><span class="pill pill-info"><u></u>Cards → sortable table</span></div>
+  <p class="xform"><b>Mobile → web:</b> stacked cards become a table, because the mobile card forced <em>Highest bid</em> and <em>Your bid</em> into a cramped side-by-side while burying the gap that actually matters. In columns you can scan four lots and see instantly where you're behind and by how much. Summary tiles surface totals the mobile screen never showed, and the urgency threshold that switched icons on mobile becomes a severity pill.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/account/bids?tab=active</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item" data-on="true"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+        <div class="side-foot">Gold tier · Alex Sterling</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><h2>My bids</h2><div class="spacer"></div>
+          <button class="btn btn-g">Export CSV</button><button class="btn">Bid settings</button></div>
+        <div class="main">
+          <div class="grid3" style="margin-bottom:17px">
+            <div class="card card-p"><small class="hint">Active bids</small>
+              <div class="money" style="font-size:22px;margin-top:3px">4</div>
+              <p class="hint" style="margin-top:3px">2 winning · 1 outbid · 1 reserve not met</p></div>
+            <div class="card card-p"><small class="hint">Total committed</small>
+              <div class="money" style="font-size:22px;margin-top:3px">$2,822,500</div>
+              <p class="hint" style="margin-top:3px">If all winning bids hold</p></div>
+            <div class="card card-p" style="border-color:rgba(239,68,68,.4)"><small class="hint">Needs attention</small>
+              <div class="money" style="font-size:22px;margin-top:3px;color:#fca5a5">1</div>
+              <p class="hint" style="margin-top:3px">McLaren 720S ends in 14m — outbid</p></div>
+          </div>
+          <div class="card">
+            <div class="card-h">
+              <div class="flow"><button class="btn btn-p" style="padding:6px 13px">Active · 4</button>
+                <button class="btn btn-g">History · 27</button></div>
+              <p class="hint">Updated live</p></div>
+            <div class="scroll-x"><table class="tbl">
+              <thead><tr><th>Lot</th><th>Status</th><th class="num">Highest bid</th><th class="num">Your bid</th>
+                <th class="num">Gap</th><th>Ends</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="flow"><div class="ph" style="width:52px;height:34px" data-l=""></div>
+                    <div><div style="font-weight:700">Porsche 911 GT3</div><small class="hint mono">2022 · #POR-GT3-0117</small></div></div></td>
+                  <td><span class="pill pill-live"><u></u>Winning</span></td>
+                  <td class="num money">$145,000</td><td class="num money">$145,000</td>
+                  <td class="num hint">—</td><td class="hint">2h 45m</td>
+                  <td><button class="btn btn-g">View</button></td></tr>
+                <tr><td><div class="flow"><div class="ph" style="width:52px;height:34px" data-l=""></div>
+                    <div><div style="font-weight:700">McLaren 720S</div><small class="hint mono">2021 · #MCL-720-0093</small></div></div></td>
+                  <td><span class="pill pill-dngr"><u></u>Outbid</span></td>
+                  <td class="num money">$1,100,000</td><td class="num money">$1,085,000</td>
+                  <td class="num money" style="color:#fca5a5">−$15,000</td>
+                  <td><span class="pill pill-dngr">14m 22s</span></td>
+                  <td><button class="btn btn-p">Raise bid</button></td></tr>
+                <tr><td><div class="flow"><div class="ph" style="width:52px;height:34px" data-l=""></div>
+                    <div><div style="font-weight:700">Tesla Model S Plaid</div><small class="hint mono">2023 · #TSL-MSP-0244</small></div></div></td>
+                  <td><span class="pill pill-live"><u></u>Winning</span></td>
+                  <td class="num money">$89,000</td><td class="num money">$89,000</td>
+                  <td class="num hint">—</td><td class="hint">1d 4h</td>
+                  <td><button class="btn btn-g">View</button></td></tr>
+                <tr><td><div class="flow"><div class="ph" style="width:52px;height:34px" data-l=""></div>
+                    <div><div style="font-weight:700">BMW M4 Competition</div><small class="hint mono">2024 · #BMW-M4C-0301</small></div></div></td>
+                  <td><span class="pill pill-warn"><u></u>Reserve not met</span></td>
+                  <td class="num money">$412,000</td><td class="num money">$412,000</td>
+                  <td class="num hint">—</td><td class="hint">3d 11h</td>
+                  <td><button class="btn btn-g">View</button></td></tr>
+              </tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W06 AUCTION WON ============================== -->
+<section class="screen" id="w06">
+  <div class="s-head"><div>
+    <h2>Auction won</h2>
+    <p class="s-meta">from S06 · Auction Won Celebration · 2ba36617</p>
+  </div><span class="pill pill-warn"><u></u>24h clock made literal</span></div>
+  <p class="xform"><b>Mobile → web:</b> a celebration screen shouldn't sprawl, so this one stays deliberately narrow on a wide canvas — the only screen here that ignores available width. The mobile version stated "complete your transaction within the next 24 hours" as flat copy; on desktop it becomes a <b>live deadline with a settlement checklist</b>, so the obligation reads as a sequence with a due time rather than a sentence. Also folds in Manrope: the mobile screen was the one that drifted to Space Grotesk.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/lots/POR-GT3-0117/won</div></div>
+    <div class="app"><div class="main"><div class="centered">
+      <div style="display:grid;place-items:center;width:62px;height:62px;margin:0 auto;border-radius:50%;
+        background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.45);font-size:26px">🏆</div>
+      <span class="pill pill-live" style="margin-top:16px"><u></u>Successful bid</span>
+      <h1 style="margin-top:13px;font-size:28px;font-weight:800">You won the auction</h1>
+      <p class="hint" style="margin-top:9px;font-size:13.5px">Lot #POR-GT3-0117 is reserved for you. Settle within 24 hours to secure the vehicle.</p>
+      <div class="card" style="margin-top:24px;text-align:left">
+        <div class="card-p" style="display:flex;gap:15px;align-items:center">
+          <div class="ph" style="width:96px;height:64px;flex:none" data-l=""></div>
+          <div style="flex:1"><h3 style="font-size:15px">2023 Porsche 911 GT3</h3>
+            <p class="hint mono" style="margin-top:3px">Lot #POR-GT3-0117 · Weissach Package</p></div>
+          <div style="text-align:right"><small class="hint">Winning price</small>
+            <div class="money" style="font-size:19px">$1,500,000</div></div>
+        </div>
+        <div class="card-h" style="border-top:1px solid var(--app-border);border-bottom:0;
+          background:rgba(245,158,11,.07)">
+          <div><div style="font-weight:700;font-size:12.5px;color:#fcd34d">Settlement due</div>
+            <p class="hint" style="margin-top:2px">Sun 4:00 PM PT → Mon 4:00 PM PT</p></div>
+          <div class="clock"><b>23</b><i>:</i><b>58</b><i>:</i><b>12</b></div>
+        </div>
+      </div>
+      <div class="card card-p" style="margin-top:14px;text-align:left">
+        <div class="sec-t">What happens next</div>
+        <div class="stack-s">
+          <div class="flow" style="gap:10px"><span class="pill pill-live"><u></u>1</span>
+            <span style="font-size:12.5px">Choose a payment method and settle $1,575,000 including fees</span></div>
+          <div class="flow" style="gap:10px"><span class="pill pill-mute">2</span>
+            <span class="hint">Confirm the delivery address for insured transit</span></div>
+          <div class="flow" style="gap:10px"><span class="pill pill-mute">3</span>
+            <span class="hint">Title and documentation transfer within 5 business days</span></div>
+        </div>
+      </div>
+      <div class="flow" style="margin-top:18px;justify-content:center">
+        <button class="btn btn-p btn-lg">Proceed to checkout</button>
+        <button class="btn btn-lg">Share</button></div>
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ============================== W07 CHECKOUT ============================== -->
+<section class="screen" id="w07">
+  <div class="s-head"><div>
+    <h2>Checkout</h2>
+    <p class="s-meta">from S07 · Payment and Checkout · f78d2793</p>
+  </div><span class="pill pill-info"><u></u>Payment capture now designed</span></div>
+  <p class="xform"><b>Mobile → web:</b> the order summary becomes a sticky right column, so the $228,020 total never scrolls away while the buyer works through payment and delivery. This screen also closes the biggest gap in the mobile flow — mobile <em>selected</em> a payment method but never <em>captured</em> one. Wire instructions with a reference are shown inline for the recommended method, since that is what a six-figure settlement actually needs.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/orders/8812/checkout</div></div>
+    <div class="app"><div style="min-width:0">
+      <div class="top"><div class="mark" style="color:var(--app-text);font-size:15px"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <p class="crumb" style="margin-left:6px">Secure checkout</p><div class="spacer"></div>
+        <span class="pill pill-live"><u></u>256-bit encrypted</span></div>
+      <div class="main"><div class="split">
+        <div class="stack">
+          <div class="card">
+            <div class="card-h"><h3>Payment method</h3><span class="pill pill-mute">Step 1 of 2</span></div>
+            <div class="rows">
+              <label class="row" style="align-items:flex-start">
+                <span class="opt" data-on="true" style="margin-top:1px"><u></u></span>
+                <div style="flex:1"><div class="flow"><b style="font-size:13px">Bank wire transfer</b>
+                    <span class="pill pill-live"><u></u>Recommended</span></div>
+                  <p class="hint" style="margin-top:3px">Preferred for high-value transactions. Funds clear in 1–2 business days.</p>
+                  <div class="card card-p" style="margin-top:11px;background:var(--app-bg)">
+                    <div class="dl">
+                      <dt>Beneficiary</dt><dd>CarBid Settlement Trust</dd>
+                      <dt>Bank</dt><dd>First Republic, San Francisco</dd>
+                      <dt>SWIFT</dt><dd class="mono">FRBBUS6S</dd>
+                      <dt>Account</dt><dd class="mono">•••• 4402</dd>
+                      <dt>Reference</dt><dd class="mono" style="color:#9dc0ff">CB-ORD-8812</dd>
+                    </div>
+                    <p class="hint" style="margin-top:10px">Quote the reference exactly — unreferenced wires delay title transfer.</p>
+                  </div></div></label>
+              <label class="row"><span class="opt"><u></u></span>
+                <div style="flex:1"><b style="font-size:13px">Credit / debit card</b>
+                  <p class="hint" style="margin-top:3px">Visa, Mastercard, Amex · capped at $50,000 — deposit only on this lot</p></div></label>
+              <label class="row"><span class="opt"><u></u></span>
+                <div style="flex:1"><b style="font-size:13px">Crypto wallet</b>
+                  <p class="hint" style="margin-top:3px">BTC, ETH, USDC · rate locked for 15 minutes at confirmation</p></div></label>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Delivery</h3><button class="btn btn-g">Change</button></div>
+            <div class="card-p" style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+              <div><div class="sec-t" style="margin-bottom:6px">Address</div>
+                <p style="font-size:12.5px;line-height:1.6">Alex Sterling<br>1284 Oakwood Avenue<br>Los Angeles, CA 90021<br>United States</p></div>
+              <div><div class="sec-t" style="margin-bottom:6px">Method</div>
+                <div class="stack-s">
+                  <div class="flow"><span class="pill pill-live"><u></u>Home delivery</span></div>
+                  <p class="hint">Fully insured enclosed transit · est. 6–9 business days after funds clear</p>
+                  <p class="hint">Tracking begins once the carrier collects from the seller.</p></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="stack sticky">
+          <div class="card">
+            <div class="card-h"><h3>Order summary</h3><span class="pill pill-mute">Lot #8812</span></div>
+            <div class="card-p">
+              <div class="flow" style="gap:12px;align-items:flex-start">
+                <div class="ph" style="width:76px;height:52px;flex:none" data-l=""></div>
+                <div><div style="font-weight:700;font-size:13px">2024 Porsche 911 Turbo S</div>
+                  <p class="hint" style="margin-top:2px">Chalk Gray / Black interior</p></div>
+              </div>
+              <div class="dl" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--app-border)">
+                <dt>Winning bid</dt><dd class="money">$215,400.00</dd>
+                <dt>Buyer's premium (5%)</dt><dd class="money">$10,770.00</dd>
+                <dt>Documentation &amp; tax</dt><dd class="money">$1,850.00</dd>
+              </div>
+              <div class="flow" style="justify-content:space-between;margin-top:14px;padding-top:13px;
+                border-top:1px solid var(--app-border)">
+                <b style="font-size:13px">Total due</b>
+                <span class="money" style="font-size:20px">$228,020.00</span></div>
+              <button class="btn btn-p btn-lg btn-blk" style="margin-top:14px">Confirm &amp; settle</button>
+              <p class="hint" style="margin-top:10px">By confirming you accept the <a href="#" style="color:#5b8dff">Terms of Service</a> and <a href="#" style="color:#5b8dff">Refund Policy</a>.</p>
+            </div>
+          </div>
+          <div class="card card-p"><div class="sec-t">Included</div>
+            <div class="stack-s">
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Authenticated &amp; inspected</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Fully insured transit</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Buyer protection to $250K</span></div>
+            </div></div>
+        </div>
+      </div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W08 SELL STEP 1 ============================== -->
+<section class="screen" id="w08">
+  <div class="s-head"><div>
+    <h2>Sell · Step 1 · Basics</h2>
+    <p class="s-meta">from S08 · Sell Your Car Form · 8c4463f5</p>
+  </div><span class="pill pill-live"><u></u>4 missing fields added</span></div>
+  <p class="xform"><b>Mobile → web:</b> the wizard gains a horizontal step rail and a <b>live listing preview</b> — sellers see the card buyers will see, which is only possible with the width. This step also carries the wizard fixes: the label now reads <b>Step 1 of 4</b> (mobile said "of 3"), reserve price is a plain dollar amount (mobile suffixed it "Millions"), and <b>Body style, Location, Starting bid and Auction duration</b> are captured here — all four appeared on the mobile review screen without ever being collected.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sell/new/basics</div></div>
+    <div class="app"><div style="min-width:0">
+      <div class="top"><h2>List your vehicle</h2><div class="spacer"></div>
+        <button class="btn btn-g">Save draft</button><button class="btn btn-g">Close</button></div>
+      <div class="steps">
+        <div class="step" data-st="now"><u>1</u><span>Basics</span></div><span class="step-line"></span>
+        <div class="step"><u>2</u><span>Description &amp; specs</span></div><span class="step-line"></span>
+        <div class="step"><u>3</u><span>Condition &amp; docs</span></div><span class="step-line"></span>
+        <div class="step"><u>4</u><span>Review &amp; submit</span></div>
+      </div>
+      <div class="main"><div class="split">
+        <div class="stack">
+          <div class="card">
+            <div class="card-h"><h3>Photos</h3><span class="pill pill-mute">3 of 24</span></div>
+            <div class="card-p">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+                <div class="ph" style="aspect-ratio:4/3" data-l="hero"></div>
+                <div class="ph" style="aspect-ratio:4/3" data-l="rear"></div>
+                <div class="ph" style="aspect-ratio:4/3" data-l="cabin"></div>
+                <div class="drop" style="aspect-ratio:4/3;flex-direction:column;justify-content:center;gap:6px">
+                  <u>+</u><span class="hint" style="font-size:10.5px">Add</span></div>
+              </div>
+              <p class="hint" style="margin-top:11px">Drag to reorder. The first photo is the listing hero. Minimum 6, maximum 24 · JPG or PNG up to 12MB.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Vehicle</h3></div>
+            <div class="card-p stack">
+              <label class="fld"><span>Car model</span><input class="inp" value="Porsche 911 Carrera"></label>
+              <div class="grid3">
+                <label class="fld"><span>Year</span><input class="inp" value="2022"></label>
+                <label class="fld"><span>Mileage</span><div class="inp-pre"><input class="inp" value="12,450"><i style="border:0;border-left:1px solid var(--app-border)">mi</i></div></label>
+                <label class="fld"><span>Category</span><select class="inp"><option>Cars</option><option>Vans</option><option>Bikes</option><option>Trucks</option></select></label>
+              </div>
+              <div class="grid2">
+                <label class="fld"><span>Body style</span><select class="inp"><option>Coupe</option><option>Sedan</option><option>SUV</option><option>Convertible</option><option>Hatchback</option><option>Wagon</option><option>Truck</option></select></label>
+                <label class="fld"><span>Location</span><div class="inp-pre"><i>◎</i><input class="inp" value="Los Angeles, CA"></div></label>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Auction setup</h3><span class="pill pill-info"><u></u>New on web</span></div>
+            <div class="card-p stack">
+              <div class="grid2">
+                <label class="fld"><span>Starting bid</span>
+                  <div class="inp-pre"><i>$</i><input class="inp" value="85,000"></div>
+                  <span class="hint">The opening bid for your auction.</span></label>
+                <label class="fld"><span>Auction duration</span>
+                  <select class="inp"><option>7 days</option><option>3 days</option><option>5 days</option><option>10 days</option><option>14 days</option></select>
+                  <span class="hint">Longer runs attract more bidders on rare lots.</span></label>
+              </div>
+              <label class="fld"><span>Reserve price · optional</span>
+                <div class="inp-pre"><i>$</i><input class="inp" value="128,000"></div>
+                <span class="hint">The minimum you will accept. The car won't sell if the highest bid is below this.</span></label>
+            </div>
+          </div>
+          <div class="flow" style="justify-content:flex-end">
+            <button class="btn btn-g">Save &amp; exit</button>
+            <button class="btn btn-p btn-lg">Next · Description &amp; specs</button></div>
+        </div>
+        <div class="stack sticky">
+          <div class="card">
+            <div class="card-h"><h3>Buyer preview</h3><span class="pill pill-mute">Live</span></div>
+            <div class="card-p">
+              <article class="vcard" style="border-color:var(--app-border)">
+                <div class="ph ph-16" data-l="hero photo"></div>
+                <div class="vcard-b"><span class="pill pill-live"><u></u>Live now</span>
+                  <h4 style="margin-top:8px">Porsche 911 Carrera</h4>
+                  <p class="sub">2022 · 12,450 mi · Coupe</p>
+                  <div class="vcard-f"><div><small>Starting bid</small>
+                    <div class="money" style="font-size:15px">$85,000</div></div>
+                    <span class="pill pill-mute">7 days</span></div></div>
+              </article>
+              <p class="hint" style="margin-top:11px">This is how your lot appears in search results.</p>
+            </div>
+          </div>
+          <div class="card card-p"><div class="sec-t">Completion</div>
+            <div class="dl"><dt>Photos</dt><dd style="color:#fcd34d">3 of 6 min</dd>
+              <dt>Vehicle</dt><dd style="color:#7ee2a8">Complete</dd>
+              <dt>Auction setup</dt><dd style="color:#7ee2a8">Complete</dd></div>
+          </div>
+        </div>
+      </div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W09 SELL STEP 2 ============================== -->
+<section class="screen" id="w09">
+  <div class="s-head"><div>
+    <h2>Sell · Step 2 · Description &amp; specs</h2>
+    <p class="s-meta">from S09 · Listing Description &amp; Details · 13740abd</p>
+  </div><span class="pill pill-live"><u></u>Spec lists widened</span></div>
+  <p class="xform"><b>Mobile → web:</b> six stacked dropdowns become a two-column spec grid, halving the scroll. The <b>enumerations are widened</b> — the mobile lists could not describe the cars CarBid actually features (no option matched "4.0L V8 Hybrid" or "8-Speed PDK), so engine and transmission accept free text with suggestions. The next button now points at the new step 3.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sell/new/details</div></div>
+    <div class="app"><div style="min-width:0">
+      <div class="top"><h2>List your vehicle</h2><div class="spacer"></div>
+        <button class="btn btn-g">Save draft</button><button class="btn btn-g">Close</button></div>
+      <div class="steps">
+        <div class="step" data-st="done"><u>✓</u><span>Basics</span></div><span class="step-line"></span>
+        <div class="step" data-st="now"><u>2</u><span>Description &amp; specs</span></div><span class="step-line"></span>
+        <div class="step"><u>3</u><span>Condition &amp; docs</span></div><span class="step-line"></span>
+        <div class="step"><u>4</u><span>Review &amp; submit</span></div>
+      </div>
+      <div class="main"><div class="split">
+        <div class="stack">
+          <div class="card">
+            <div class="card-h"><h3>Description</h3><span class="pill pill-mute">412 / 4,000</span></div>
+            <div class="card-p">
+              <textarea class="inp" rows="6" style="width:100%;resize:vertical;line-height:1.6">Immaculate 2022 Porsche 911 Carrera in Shark Blue. Single owner, garage-kept, and meticulously maintained at authorized Porsche service centers. Features the Premium Package, Sport Chrono Package, and factory Sport Exhaust System. Paint protection film applied to front bumper and hood from new.</textarea>
+              <p class="hint" style="margin-top:9px">Mention modifications, recent services and unique options. Listings over 200 words attract measurably more bids.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Technical specifications</h3></div>
+            <div class="card-p grid2">
+              <label class="fld"><span>Engine</span><input class="inp" value="3.0L Twin-Turbo H6">
+                <span class="hint">Free text · suggestions offered as you type</span></label>
+              <label class="fld"><span>Transmission</span><input class="inp" value="8-Speed PDK"></label>
+              <label class="fld"><span>Drivetrain</span><select class="inp"><option>RWD</option><option>AWD</option><option>FWD</option></select></label>
+              <label class="fld"><span>Fuel type</span><select class="inp"><option>Gasoline</option><option>Diesel</option><option>Electric</option><option>Plug-in hybrid</option><option>Hybrid</option></select></label>
+              <label class="fld"><span>Exterior colour</span><input class="inp" value="Shark Blue"></label>
+              <label class="fld"><span>Interior colour</span><input class="inp" value="Black Leather"></label>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Ownership history</h3></div>
+            <div class="card-p">
+              <label class="fld"><span>Previous owners</span>
+                <div class="chips" style="margin-top:3px"><span class="chip" data-on="true">1</span>
+                  <span class="chip">2</span><span class="chip">3</span><span class="chip">4+</span></div></label>
+              <div style="margin-top:15px">
+                <div class="tog"><div><b style="font-size:12.5px">Full service history</b>
+                    <em>Complete maintenance records available</em></div>
+                  <span class="sw" data-on="true"></span></div>
+                <div class="tog"><div><b style="font-size:12.5px">Accident history</b>
+                    <em>Has this vehicle ever been in a collision?</em></div>
+                  <span class="sw"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="flow" style="justify-content:space-between">
+            <button class="btn">Back</button>
+            <button class="btn btn-p btn-lg">Next · Condition &amp; docs</button></div>
+        </div>
+        <div class="stack sticky">
+          <div class="card card-p"><div class="sec-t">Progress</div>
+            <div style="height:5px;border-radius:100px;background:var(--app-border);overflow:hidden">
+              <div style="width:50%;height:100%;background:var(--app-primary)"></div></div>
+            <p class="hint" style="margin-top:8px">Step 2 of 4 · 50% complete</p>
+          </div>
+          <div class="note"><u></u><div>Cars with a stated service history and a named colour spec sell for <b>8–12% more</b> at this price point.</div></div>
+        </div>
+      </div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W10 SELL STEP 3 (NEW) ============================== -->
+<section class="screen" id="w10">
+  <div class="s-head"><div>
+    <h2>Sell · Step 3 · Condition &amp; documentation</h2>
+    <p class="s-meta">new screen · had never been designed on mobile</p>
+  </div><span class="pill pill-live"><u></u>Fills the wizard gap</span></div>
+  <p class="xform"><b>The missing step.</b> Mobile ran Step 1 of 3 → Step 2 of 4 → Step 4 of 4; step 3 did not exist in any form, yet the vehicle detail screen links to a condition report nothing ever captured. This screen closes that loop — condition report, service records, VIN and disclosed flaws — and its mobile counterpart is already generated at <code class="mono">design/generated/</code>.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sell/new/condition</div></div>
+    <div class="app"><div style="min-width:0">
+      <div class="top"><h2>List your vehicle</h2><div class="spacer"></div>
+        <button class="btn btn-g">Save draft</button><button class="btn btn-g">Close</button></div>
+      <div class="steps">
+        <div class="step" data-st="done"><u>✓</u><span>Basics</span></div><span class="step-line"></span>
+        <div class="step" data-st="done"><u>✓</u><span>Description &amp; specs</span></div><span class="step-line"></span>
+        <div class="step" data-st="now"><u>3</u><span>Condition &amp; docs</span></div><span class="step-line"></span>
+        <div class="step"><u>4</u><span>Review &amp; submit</span></div>
+      </div>
+      <div class="main"><div class="split">
+        <div class="stack">
+          <div>
+            <h3 style="font-size:17px;font-weight:800">Condition &amp; documentation</h3>
+            <p class="hint" style="margin-top:5px;font-size:13px">High-value buyers expect evidence. Complete records attract stronger bids.</p>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Condition report</h3><span class="pill pill-warn">Strongly recommended</span></div>
+            <div class="card-p stack-s">
+              <div class="file"><u></u><b>inspection_porsche_911.pdf</b>
+                <span class="hint">2.4 MB</span><button class="btn btn-g">Replace</button></div>
+              <p class="hint">A professional inspection report. Lots without one receive materially fewer bids above $500K.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Service records</h3><span class="pill pill-live"><u></u>4 documents</span></div>
+            <div class="card-p">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+                <div class="ph" style="aspect-ratio:1" data-l="inv 2022"></div>
+                <div class="ph" style="aspect-ratio:1" data-l="inv 2023"></div>
+                <div class="ph" style="aspect-ratio:1" data-l="20k svc"></div>
+                <div class="drop" style="aspect-ratio:1;flex-direction:column;justify-content:center;gap:5px">
+                  <u>+</u><span class="hint" style="font-size:10px">Add</span></div>
+              </div>
+              <p class="hint" style="margin-top:10px">Invoices and maintenance history · PDF, JPG or PNG</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Identification</h3></div>
+            <div class="card-p stack">
+              <label class="fld"><span>VIN · 17 characters</span>
+                <input class="inp mono" value="WP0AA2A96NS220156" style="letter-spacing:.08em">
+                <span class="hint">We verify the VIN against national records before your listing goes live.</span></label>
+              <label class="fld"><span>Known flaws &amp; damage</span>
+                <textarea class="inp" rows="3" style="resize:vertical;line-height:1.6">Minor stone chips to front bumper. Kerbing to nearside front wheel rim.</textarea>
+                <span class="hint">Full disclosure protects you from post-sale disputes.</span></label>
+              <div class="tog"><div><b style="font-size:12.5px">Aftermarket modifications</b>
+                  <em>Non-factory parts, tuning or cosmetic changes</em></div>
+                <span class="sw"></span></div>
+            </div>
+          </div>
+          <div class="flow" style="justify-content:space-between">
+            <button class="btn">Back</button>
+            <button class="btn btn-p btn-lg">Next · Review &amp; submit</button></div>
+        </div>
+        <div class="stack sticky">
+          <div class="card card-p"><div class="sec-t">Progress</div>
+            <div style="height:5px;border-radius:100px;background:var(--app-border);overflow:hidden">
+              <div style="width:75%;height:100%;background:var(--app-primary)"></div></div>
+            <p class="hint" style="margin-top:8px">Step 3 of 4 · 75% complete</p>
+          </div>
+          <div class="note note-ok"><u></u><div>Listings with a condition report and full service history receive <b>40% more bids</b> on average.</div></div>
+          <div class="card card-p"><div class="sec-t">Evidence checklist</div>
+            <div class="stack-s">
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Condition report</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Service records</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">VIN supplied</span></div>
+              <div class="flow"><span class="pill pill-warn"><u></u></span><span class="hint">Title document — not uploaded</span></div>
+            </div></div>
+        </div>
+      </div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W11 SELL STEP 4 REVIEW ============================== -->
+<section class="screen" id="w11">
+  <div class="s-head"><div>
+    <h2>Sell · Step 4 · Review &amp; submit</h2>
+    <p class="s-meta">from S10 · Review and Submit Listing · 8ac26e2b</p>
+  </div><span class="pill pill-info"><u></u>+ Condition section</span></div>
+  <p class="xform"><b>Mobile → web:</b> the mobile review was a 3,060px scroll — the tallest screen in the set — so nothing was comparable at a glance. On desktop the sections become a two-column audit with section-level Edit links, and the submit gate moves to a sticky rail. A <b>Condition &amp; documentation</b> section is added to review what step 3 now collects.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sell/new/review</div></div>
+    <div class="app"><div style="min-width:0">
+      <div class="top"><h2>List your vehicle</h2><div class="spacer"></div><button class="btn btn-g">Close</button></div>
+      <div class="steps">
+        <div class="step" data-st="done"><u>✓</u><span>Basics</span></div><span class="step-line"></span>
+        <div class="step" data-st="done"><u>✓</u><span>Description &amp; specs</span></div><span class="step-line"></span>
+        <div class="step" data-st="done"><u>✓</u><span>Condition &amp; docs</span></div><span class="step-line"></span>
+        <div class="step" data-st="now"><u>4</u><span>Review &amp; submit</span></div>
+      </div>
+      <div class="main"><div class="split">
+        <div class="stack">
+          <div class="card card-p" style="display:flex;gap:15px;align-items:center">
+            <div class="ph" style="width:132px;height:88px;flex:none" data-l="hero"></div>
+            <div style="flex:1"><h3 style="font-size:16px">2022 Porsche 911 Carrera</h3>
+              <p class="hint" style="margin-top:3px">Los Angeles, CA · Coupe · 7-day auction</p>
+              <div class="flow" style="margin-top:8px"><span class="pill pill-mute">Reserve $128,000</span></div></div>
+            <div style="text-align:right"><small class="hint">Starting bid</small>
+              <div class="money" style="font-size:19px">$85,000</div></div>
+          </div>
+          <div class="grid2">
+            <div class="card"><div class="card-h"><h3>Vehicle info</h3><button class="btn btn-g">Edit</button></div>
+              <div class="card-p"><div class="dl">
+                <dt>Mileage</dt><dd>12,450 mi</dd><dt>Body style</dt><dd>Coupe</dd>
+                <dt>Exterior</dt><dd>Shark Blue</dd><dt>Interior</dt><dd>Black Leather</dd>
+                <dt>Location</dt><dd>Los Angeles, CA</dd></div></div></div>
+            <div class="card"><div class="card-h"><h3>Technical specs</h3><button class="btn btn-g">Edit</button></div>
+              <div class="card-p"><div class="dl">
+                <dt>Engine</dt><dd>3.0L Twin-Turbo H6</dd><dt>Transmission</dt><dd>8-Speed PDK</dd>
+                <dt>Drivetrain</dt><dd>RWD</dd><dt>Fuel</dt><dd>Gasoline</dd>
+                <dt>Owners</dt><dd>1</dd></div></div></div>
+          </div>
+          <div class="card"><div class="card-h"><h3>Condition &amp; documentation</h3>
+              <button class="btn btn-g">Edit</button></div>
+            <div class="card-p"><div class="dl" style="grid-template-columns:auto 1fr auto 1fr;gap:9px 20px">
+              <dt>Condition report</dt><dd style="color:#7ee2a8">Uploaded (PDF)</dd>
+              <dt>Service records</dt><dd style="color:#7ee2a8">4 documents</dd>
+              <dt>VIN</dt><dd class="mono">WP0AA2A96NS220156</dd>
+              <dt>Known flaws</dt><dd>Minor stone chips, front bumper</dd></div></div></div>
+          <div class="card"><div class="card-h"><h3>Description</h3><button class="btn btn-g">Edit</button></div>
+            <div class="card-p"><p style="color:#c9d3e6;line-height:1.6;font-size:12.5px">Immaculate 2022 Porsche 911 Carrera in Shark Blue. Single owner, garage-kept, and meticulously maintained at authorized Porsche service centers. Features the Premium Package, Sport Chrono Package, and factory Sport Exhaust System…</p></div></div>
+        </div>
+        <div class="stack sticky">
+          <div class="card card-p">
+            <div class="sec-t">Ready to submit</div>
+            <div class="stack-s" style="margin-bottom:14px">
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">6 photos uploaded</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Specs complete</span></div>
+              <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Condition evidence attached</span></div>
+            </div>
+            <label class="flow" style="gap:9px;align-items:flex-start;padding-top:13px;
+              border-top:1px solid var(--app-border)">
+              <span class="opt opt-sq" data-on="true" style="margin-top:2px"><u></u></span>
+              <span class="hint" style="flex:1">I certify all information is accurate and agree to the <a href="#" style="color:#5b8dff">Terms &amp; Conditions</a> of the auction platform.</span></label>
+            <button class="btn btn-p btn-lg btn-blk" style="margin-top:13px">Submit listing</button>
+            <p class="hint" style="margin-top:9px;text-align:center">Reviewed within 4–6 hours</p>
+          </div>
+        </div>
+      </div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W12 SUBMITTED ============================== -->
+<section class="screen" id="w12">
+  <div class="s-head"><div>
+    <h2>Listing submitted</h2>
+    <p class="s-meta">from S11 · Listing Submitted Success · 69304cb2</p>
+  </div><span class="pill pill-info"><u></u>Review SLA as timeline</span></div>
+  <p class="xform"><b>Mobile → web:</b> mobile stated the 4–6 hour review SLA as a sentence in an info box. Here it becomes a <b>moderation timeline</b> with the submission's actual position on it, so "under review" has a shape and an expected finish. The two mobile buttons gain a third destination the mobile flow lacked entirely — a seller listings view.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/sell/submitted/AUC-29402</div></div>
+    <div class="app"><div class="main"><div class="centered">
+      <div style="display:grid;place-items:center;width:56px;height:56px;margin:0 auto;border-radius:50%;
+        background:rgba(19,91,236,.16);border:1px solid rgba(19,91,236,.5);font-size:23px">✓</div>
+      <h1 style="margin-top:16px;font-size:25px;font-weight:800">Listing submitted</h1>
+      <p class="hint" style="margin-top:8px;font-size:13.5px">Your vehicle is being reviewed by our team and will go live once approved. We'll notify you the moment bidding opens.</p>
+      <div class="card" style="margin-top:22px;text-align:left">
+        <div class="card-p" style="display:flex;gap:14px;align-items:center">
+          <div class="ph" style="width:88px;height:58px;flex:none" data-l=""></div>
+          <div style="flex:1"><h3 style="font-size:14.5px">2022 Porsche 911 Carrera</h3>
+            <p class="hint mono" style="margin-top:3px">Submission #AUC-29402 · 4 Aug 2026</p></div>
+          <span class="pill pill-warn"><u></u>Under review</span>
+        </div>
+        <div class="card-p" style="border-top:1px solid var(--app-border)">
+          <div class="sec-t">Moderation timeline</div>
+          <div class="stack-s">
+            <div class="flow" style="gap:10px"><span class="pill pill-live"><u></u></span>
+              <span style="font-size:12.5px;flex:1">Submitted</span><span class="hint mono">11:14</span></div>
+            <div class="flow" style="gap:10px"><span class="pill pill-warn"><u></u></span>
+              <span style="font-size:12.5px;flex:1;font-weight:600">Photo &amp; document check — in progress</span>
+              <span class="hint mono">~13:00</span></div>
+            <div class="flow" style="gap:10px"><span class="pill pill-mute">3</span>
+              <span class="hint" style="flex:1">VIN verification</span><span class="hint mono">~15:00</span></div>
+            <div class="flow" style="gap:10px"><span class="pill pill-mute">4</span>
+              <span class="hint" style="flex:1">Approved &amp; scheduled</span><span class="hint mono">~17:00</span></div>
+          </div>
+          <p class="hint" style="margin-top:12px">Reviews typically complete within 4–6 hours. If anything needs changing we'll tell you exactly what.</p>
+        </div>
+      </div>
+      <div class="flow" style="margin-top:18px;justify-content:center">
+        <button class="btn btn-p btn-lg">View my listings</button>
+        <button class="btn btn-lg">List another vehicle</button></div>
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ============================== W13 NOTIFICATIONS ============================== -->
+<section class="screen" id="w13">
+  <div class="s-head"><div>
+    <h2>Notifications</h2>
+    <p class="s-meta">from S12 · Auction Notification Center · ae2581ba</p>
+  </div><span class="pill pill-info"><u></u>List + detail</span></div>
+  <p class="xform"><b>Mobile → web:</b> mobile notifications were a dead-end list — tap one, leave the screen, come back, lose your place. Desktop makes it <b>master–detail</b>: the item opens beside the list, so a bidder can clear an outbid alert and act on it without losing the queue. Read state, absent from the mobile design, is now explicit.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/notifications</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+        <div class="side-foot">Gold tier · Alex Sterling</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><h2>Notifications</h2><div class="spacer"></div>
+          <button class="btn btn-g">Mark all read</button><button class="btn">Preferences</button></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 330px">
+          <div style="border-right:1px solid var(--app-border)">
+            <div style="padding:13px 18px;border-bottom:1px solid var(--app-border)">
+              <div class="chips"><span class="chip" data-on="true">All · 5</span><span class="chip">Bids · 2</span>
+                <span class="chip">Alerts · 1</span><span class="chip">Orders · 1</span><span class="chip">Account · 1</span></div>
+            </div>
+            <div style="padding:11px 18px 5px" class="sec-t">Today</div>
+            <div class="rows">
+              <div class="row" style="background:rgba(19,91,236,.07)">
+                <span class="pill pill-dngr"><u></u></span>
+                <div style="flex:1"><div class="flow" style="justify-content:space-between">
+                  <b style="font-size:12.5px">Outbid</b><span class="hint">2m ago</span></div>
+                  <p class="hint" style="margin-top:2px">You've been outbid on the <b style="color:var(--app-text)">2022 Ferrari SF90</b>. Current bid $2,500,000.</p></div></div>
+              <div class="row">
+                <span class="pill pill-live"><u></u></span>
+                <div style="flex:1"><div class="flow" style="justify-content:space-between">
+                  <b style="font-size:12.5px">New bid received</b><span class="hint">15m ago</span></div>
+                  <p class="hint" style="margin-top:2px">New bid on your <b style="color:var(--app-text)">2021 Porsche 911</b>. Now $115,000.</p></div></div>
+              <div class="row">
+                <span class="pill pill-warn"><u></u></span>
+                <div style="flex:1"><div class="flow" style="justify-content:space-between">
+                  <b style="font-size:12.5px">Ending soon</b><span class="hint">1h ago</span></div>
+                  <p class="hint" style="margin-top:2px">Auction ending in 5 minutes: <b style="color:var(--app-text)">2020 BMW M4</b>.</p></div></div>
+            </div>
+            <div style="padding:13px 18px 5px" class="sec-t">Yesterday</div>
+            <div class="rows">
+              <div class="row"><span class="pill pill-live"><u></u></span>
+                <div style="flex:1"><div class="flow" style="justify-content:space-between">
+                  <b style="font-size:12.5px">Payment confirmed</b><span class="hint">1d ago</span></div>
+                  <p class="hint" style="margin-top:2px">Payment successful for <b style="color:var(--app-text)">2019 Audi R8</b>. Shipping details sent.</p></div></div>
+              <div class="row"><span class="pill pill-info"><u></u></span>
+                <div style="flex:1"><div class="flow" style="justify-content:space-between">
+                  <b style="font-size:12.5px">Account update</b><span class="hint">1d ago</span></div>
+                  <p class="hint" style="margin-top:2px">Your identification documents have been verified. Happy bidding.</p></div></div>
+            </div>
+          </div>
+          <aside style="padding:18px;background:#0d131f">
+            <span class="pill pill-dngr"><u></u>Outbid · 2m ago</span>
+            <h3 style="margin-top:12px;font-size:15px">You've been outbid</h3>
+            <div class="ph ph-16" style="margin-top:13px" data-l="SF90 Stradale"></div>
+            <div class="card card-p" style="margin-top:13px;background:var(--app-bg)">
+              <div class="dl"><dt>Lot</dt><dd class="mono">#FER-SF90-0042</dd>
+                <dt>Your bid</dt><dd class="money">$2,485,000</dd>
+                <dt>Current bid</dt><dd class="money" style="color:#fca5a5">$2,500,000</dd>
+                <dt>Time left</dt><dd>02:14:35</dd></div>
+            </div>
+            <button class="btn btn-p btn-blk" style="margin-top:13px">Raise bid to $2,510,000</button>
+            <button class="btn btn-g btn-blk" style="margin-top:8px">View lot</button>
+          </aside>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W14 PROFILE ============================== -->
+<section class="screen" id="w14">
+  <div class="s-head"><div>
+    <h2>Profile &amp; settings</h2>
+    <p class="s-meta">from S13 · User Profile and Settings · 996d7fdc</p>
+  </div><span class="pill pill-info"><u></u>6 dead links now panels</span></div>
+  <p class="xform"><b>Mobile → web:</b> mobile listed six settings rows that all led nowhere — Personal information, Payment methods, Identity verification, Auction alerts, Security, Help. On desktop they become a <b>settings sub-navigation with the panel rendered inline</b>, so the destinations exist rather than being promised. The three profile stats become links to filtered views.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/account/payment-methods</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item"><u></u>Leasing</div>
+        <div class="s-item" data-on="true"><u></u>Profile</div>
+        <div class="side-foot">v4.12.0 (build 942)</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><h2>Account</h2><div class="spacer"></div><button class="btn btn-g">Log out</button></div>
+        <div class="main">
+          <div class="card card-p" style="display:flex;gap:16px;align-items:center;margin-bottom:18px">
+            <div class="av av-lg">AS</div>
+            <div style="flex:1"><div class="flow"><h3 style="font-size:17px">Alex Sterling</h3>
+                <span class="pill pill-live"><u></u>Verified</span></div>
+              <p class="hint" style="margin-top:3px">Gold tier member · since 2021</p></div>
+            <div class="flow" style="gap:26px">
+              <div style="text-align:right"><div class="money" style="font-size:18px">12</div>
+                <small class="hint">Bids won</small></div>
+              <div style="text-align:right"><div class="money" style="font-size:18px">4</div>
+                <small class="hint">Active bids</small></div>
+              <div style="text-align:right"><div class="money" style="font-size:18px">8</div>
+                <small class="hint">Listed</small></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:212px minmax(0,1fr);gap:20px;align-items:start">
+            <nav class="card" style="overflow:hidden">
+              <div class="rows">
+                <div class="row" style="padding:10px 14px"><span class="hint" style="flex:1">Personal information</span></div>
+                <div class="row" style="padding:10px 14px;background:rgba(19,91,236,.13)">
+                  <b style="flex:1;font-size:12.5px">Payment methods</b></div>
+                <div class="row" style="padding:10px 14px"><span class="hint" style="flex:1">Identity verification</span>
+                  <span class="pill pill-live"><u></u></span></div>
+                <div class="row" style="padding:10px 14px"><span class="hint" style="flex:1">Auction alerts</span></div>
+                <div class="row" style="padding:10px 14px"><span class="hint" style="flex:1">Security</span></div>
+                <div class="row" style="padding:10px 14px"><span class="hint" style="flex:1">Help &amp; support</span></div>
+              </div>
+            </nav>
+            <div class="stack">
+              <div class="card">
+                <div class="card-h"><h3>Payment methods</h3><button class="btn btn-p">Add method</button></div>
+                <div class="rows">
+                  <div class="row"><div class="av" style="border-radius:5px">VI</div>
+                    <div style="flex:1"><b style="font-size:12.5px">Visa •••• 4242</b>
+                      <p class="hint" style="margin-top:2px">Expires 09/2028 · Alex Sterling</p></div>
+                    <span class="pill pill-info"><u></u>Default</span>
+                    <button class="btn btn-g">Remove</button></div>
+                  <div class="row"><div class="av" style="border-radius:5px">WI</div>
+                    <div style="flex:1"><b style="font-size:12.5px">Bank wire · First Republic</b>
+                      <p class="hint" style="margin-top:2px">Account •••• 8817 · verified 12 Jun 2026</p></div>
+                    <span class="pill pill-mute">For lots &gt; $50K</span>
+                    <button class="btn btn-g">Remove</button></div>
+                  <div class="row"><div class="av" style="border-radius:5px">₿</div>
+                    <div style="flex:1"><b style="font-size:12.5px">Crypto wallet</b>
+                      <p class="hint mono" style="margin-top:2px">bc1q…4h9v · BTC, ETH, USDC</p></div>
+                    <button class="btn btn-g">Remove</button></div>
+                </div>
+              </div>
+              <div class="note"><u></u><div>Card payments are capped at <b>$50,000</b> per transaction. Lots settling above that require a bank wire or crypto transfer.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W15 COMPARE LENDERS ============================== -->
+<section class="screen" id="w15">
+  <div class="s-head"><div>
+    <h2>Compare lenders</h2>
+    <p class="s-meta">from S14 · Leasing Options Directory · 06296566</p>
+  </div><span class="pill pill-live"><u></u>Cards → comparison table</span></div>
+  <p class="xform"><b>Mobile → web:</b> the clearest case for desktop in the whole set. Mobile stacked three lender cards vertically, so comparing a 6.4% / 85% / 5yr offer against 5.9% / 75% / 4yr meant scrolling and remembering. A <b>comparison table</b> puts every term in a column you can read across — plus a derived monthly cost the mobile cards couldn't show. Periwinkle is replaced by the blue system here.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/leasing</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item" data-on="true"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+        <div class="side-foot">Gold tier · Alex Sterling</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><h2>Leasing</h2>
+          <p class="crumb" style="margin-left:6px">Rates updated 2 minutes ago</p>
+          <div class="spacer"></div><button class="btn">My applications</button></div>
+        <div class="main">
+          <div class="flow" style="justify-content:space-between;margin-bottom:15px">
+            <div><h3 style="font-size:16px;font-weight:800">Compare finance offers</h3>
+              <p class="hint" style="margin-top:2px">Illustrated on a $215,000 facility over the lender's maximum term</p></div>
+            <div class="chips"><span class="chip" data-on="true">Recommended</span><span class="chip">Lowest rate</span>
+              <span class="chip">Max tenure</span><span class="chip">Instant approval</span></div>
+          </div>
+          <div class="card scroll-x"><table class="tbl">
+            <thead><tr><th>Lender</th><th class="num">Funding</th><th class="num">Rate</th>
+              <th class="num">Max term</th><th class="num">Est. monthly</th><th>Eligibility</th><th></th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(19,91,236,.07)">
+                <td><div class="flow"><div class="av" style="border-radius:6px">VP</div>
+                  <div><div style="font-weight:700">Velocity Prime Capital</div>
+                    <small class="hint">Instant digital verification</small></div></div></td>
+                <td class="num">85%</td><td class="num money">6.4%</td><td class="num">5 yrs</td>
+                <td class="num money">$4,192</td>
+                <td><span class="pill pill-live"><u></u>Pre-approved</span></td>
+                <td><button class="btn btn-p">Apply</button></td></tr>
+              <tr><td><div class="flow"><div class="av" style="border-radius:6px">SG</div>
+                  <div><div style="font-weight:700">Summit Global Leasing</div>
+                    <small class="hint">Specializing in exotic collections</small></div></div></td>
+                <td class="num">90%</td><td class="num money">7.2%</td><td class="num">7 yrs</td>
+                <td class="num money">$3,281</td>
+                <td><span class="pill pill-mute">Full application</span></td>
+                <td><button class="btn">Apply</button></td></tr>
+              <tr><td><div class="flow"><div class="av" style="border-radius:6px">EA</div>
+                  <div><div style="font-weight:700">Elite Asset Credit</div>
+                    <small class="hint">Tier 1 borrowers only</small></div></div></td>
+                <td class="num">75%</td><td class="num money" style="color:#7ee2a8">5.9%</td><td class="num">4 yrs</td>
+                <td class="num money">$5,038</td>
+                <td><span class="pill pill-warn"><u></u>Tier 1 required</span></td>
+                <td><button class="btn">Check eligibility</button></td></tr>
+            </tbody></table></div>
+          <div class="grid3" style="margin-top:16px">
+            <div class="card card-p"><div class="sec-t">Lowest rate</div>
+              <div style="font-weight:700">Elite Asset Credit · 5.9%</div>
+              <p class="hint" style="margin-top:4px">Cheapest borrowing, but the shortest term and the highest monthly cost.</p></div>
+            <div class="card card-p"><div class="sec-t">Lowest monthly</div>
+              <div style="font-weight:700">Summit Global · $3,281</div>
+              <p class="hint" style="margin-top:4px">7-year term spreads the cost furthest. Highest total interest paid.</p></div>
+            <div class="card card-p" style="border-color:rgba(19,91,236,.45)"><div class="sec-t">Recommended</div>
+              <div style="font-weight:700">Velocity Prime · 6.4%</div>
+              <p class="hint" style="margin-top:4px">You're pre-approved, so funds clear before most auctions close.</p></div>
+          </div>
+          <p class="hint" style="margin-top:14px">Velocity Prime Capital, Summit Global Leasing and Elite Asset Credit are independent lenders. CarBid does not underwrite finance and receives no commission on rate.</p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W16 LEASE APPLICATION ============================== -->
+<section class="screen" id="w16">
+  <div class="s-head"><div>
+    <h2>Lease application</h2>
+    <p class="s-meta">from S15 · Lease Application Form · 7ea180c7</p>
+  </div><span class="pill pill-warn"><u></u>Gaps surfaced, not hidden</span></div>
+  <p class="xform"><b>Mobile → web:</b> the estimated monthly payment moves from a cramped inline readout to a <b>live amortisation panel</b> that recalculates as the term slider moves — the whole point of the form, given the width to actually show its working. Two open questions from the spec are made visible rather than papered over: the application collects no income or employment data, and it isn't bound to a lot.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/leasing/apply?lender=velocity-prime</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item" data-on="true"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><p class="crumb">Leasing / <span style="color:var(--app-text)">Velocity Prime Capital</span></p>
+          <div class="spacer"></div><span class="pill pill-live"><u></u>Pre-approved</span></div>
+        <div class="main"><div class="split">
+          <div class="stack">
+            <div>
+              <h3 style="font-size:17px;font-weight:800">Lease configuration</h3>
+              <p class="hint" style="margin-top:5px">Personalise your financing terms. Figures update as you type.</p>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Applicant</h3></div>
+              <div class="card-p stack">
+                <div class="grid2">
+                  <label class="fld"><span>Full name</span><input class="inp" value="Alex Sterling"></label>
+                  <label class="fld"><span>Identity card number</span>
+                    <div class="inp-pre"><i>ID</i><input class="inp mono" value="D7742-88190-4"></div></label>
+                </div>
+                <label class="fld"><span>Lot this finance is for · optional</span>
+                  <select class="inp"><option>2024 Porsche 911 GT3 RS — Lot #4402</option>
+                    <option>Not tied to a specific lot</option></select>
+                  <span class="hint">Binding the application to a lot lets us release funds the moment you win.</span></label>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Terms</h3></div>
+              <div class="card-p stack">
+                <div class="grid2">
+                  <label class="fld"><span>Leasing amount</span>
+                    <div class="inp-pre"><i>$</i><input class="inp" value="215,000"></div></label>
+                  <label class="fld"><span>Expected interest rate</span>
+                    <div class="inp-pre"><input class="inp" value="6.4"><i style="border:0;border-left:1px solid var(--app-border)">%</i></div></label>
+                </div>
+                <div class="fld"><span>Lease duration · 3 years</span>
+                  <div class="slider"><div class="slider-t">
+                    <div class="slider-f" style="left:0;width:33%"></div>
+                    <div class="slider-h" style="left:33%"></div>
+                  </div><div class="slider-l"><span>1 yr</span><span>7 yrs</span></div></div></div>
+                <label class="fld"><span>Down payment</span>
+                  <div class="inp-pre"><i>$</i><input class="inp" value="15,000"></div></label>
+              </div>
+            </div>
+            <div class="note"><u></u><div>Velocity Prime will request income and employment verification by email after submission. Nothing further is needed here.</div></div>
+            <div class="flow" style="justify-content:flex-end">
+              <button class="btn">Save for later</button>
+              <button class="btn btn-p btn-lg">Submit application</button></div>
+          </div>
+          <div class="stack sticky">
+            <div class="card">
+              <div class="card-h"><h3>Your illustration</h3><span class="pill pill-mute">Live</span></div>
+              <div class="card-p">
+                <small class="hint">Estimated monthly payment</small>
+                <div class="money big" style="margin-top:3px">$6,124</div>
+                <p class="hint" style="margin-top:4px">for 36 months</p>
+                <div class="dl" style="margin-top:15px;padding-top:14px;border-top:1px solid var(--app-border)">
+                  <dt>Amount financed</dt><dd class="money">$200,000</dd>
+                  <dt>Down payment</dt><dd class="money">$15,000</dd>
+                  <dt>Rate (APR)</dt><dd class="money">6.4%</dd>
+                  <dt>Total interest</dt><dd class="money">$20,464</dd>
+                  <dt>Total repayable</dt><dd class="money">$220,464</dd>
+                </div>
+                <p class="hint" style="margin-top:12px">Illustration only. The lender's final offer governs.</p>
+              </div>
+            </div>
+            <div class="card card-p"><div class="sec-t">Term comparison</div>
+              <div class="dl"><dt>2 years</dt><dd class="money">$8,905/mo</dd>
+                <dt style="color:var(--app-text);font-weight:700">3 years</dt><dd class="money" style="color:#9dc0ff">$6,124/mo</dd>
+                <dt>5 years</dt><dd class="money">$3,908/mo</dd></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W17 ASSIGNED AGENT ============================== -->
+<section class="screen" id="w17">
+  <div class="s-head"><div>
+    <h2>Application submitted · agent assigned</h2>
+    <p class="s-meta">from S16 · Assigned Leasing Agent · 44cf34f0</p>
+  </div><span class="pill pill-live"><u></u>Ref prefix VEL- → CB-</span></div>
+  <p class="xform"><b>Mobile → web:</b> the mobile screen showed only the terminal "Review Phase" state, with Direct contact and Schedule consultation leading to screens that don't exist. Here the status becomes a <b>staged tracker</b> and the agent panel carries a real message thread — the two undesigned subsystems get a home rather than a button. The reference reads <code class="mono">CB-2049-LX</code> under the CarBid brand.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/leasing/applications/CB-2049-LX</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item" data-on="true"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><p class="crumb">Leasing / Applications / <span style="color:var(--app-text)">CB-2049-LX</span></p>
+          <div class="spacer"></div><span class="pill pill-warn"><u></u>Review phase</span></div>
+        <div class="main"><div class="split">
+          <div class="stack">
+            <div class="card card-p">
+              <div class="flow" style="gap:11px"><span class="pill pill-live"><u></u></span>
+                <h3 style="font-size:16px">Application submitted successfully</h3></div>
+              <p class="hint" style="margin-top:7px">Your lease request has been received and is being processed by our premium fleet team.</p>
+              <div class="dl" style="margin-top:15px;padding-top:14px;border-top:1px solid var(--app-border)">
+                <dt>Reference</dt><dd class="mono">CB-2049-LX</dd>
+                <dt>Lender</dt><dd>Velocity Prime Capital</dd>
+                <dt>Requested</dt><dd class="money">$215,000 over 36 months</dd>
+                <dt>Lot</dt><dd class="mono">#4402 — 911 GT3 RS</dd></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Application status</h3><span class="pill pill-mute">Step 2 of 4</span></div>
+              <div class="card-p stack-s">
+                <div class="flow" style="gap:11px"><span class="pill pill-live"><u></u></span>
+                  <span style="font-size:12.5px;flex:1">Submitted &amp; agent assigned</span>
+                  <span class="hint mono">11:02</span></div>
+                <div class="flow" style="gap:11px"><span class="pill pill-warn"><u></u></span>
+                  <span style="font-size:12.5px;flex:1;font-weight:600">Document review — in progress</span>
+                  <span class="hint mono">~11:45</span></div>
+                <div class="flow" style="gap:11px"><span class="pill pill-mute">3</span>
+                  <span class="hint" style="flex:1">Credit decision</span><span class="hint mono">~2 hrs</span></div>
+                <div class="flow" style="gap:11px"><span class="pill pill-mute">4</span>
+                  <span class="hint" style="flex:1">Funds available for bidding</span><span class="hint mono">same day</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Messages</h3><span class="pill pill-live"><u></u>Julian is online</span></div>
+              <div class="card-p stack-s">
+                <div class="flow" style="gap:10px;align-items:flex-start">
+                  <div class="av">JV</div>
+                  <div class="card card-p" style="flex:1;background:var(--app-bg);padding:11px 13px">
+                    <p style="font-size:12.5px;line-height:1.6">"I'll be reviewing your documentation shortly to ensure the fastest possible handover. Look out for a notification from me within the hour."</p>
+                    <p class="hint" style="margin-top:6px">Julian Vance · 11:04</p></div>
+                </div>
+                <div class="flow" style="gap:9px;margin-top:4px">
+                  <input class="inp" style="flex:1" data-ph="true" value="Reply to Julian…">
+                  <button class="btn btn-p">Send</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="stack sticky">
+            <div class="card card-p" style="text-align:center">
+              <div class="av av-lg" style="margin:0 auto">JV</div>
+              <h3 style="margin-top:11px;font-size:15px">Julian Vance</h3>
+              <p class="hint" style="margin-top:2px">Senior Acquisition Specialist</p>
+              <div class="flow" style="justify-content:center;margin-top:9px">
+                <span class="pill pill-live"><u></u>Online now</span></div>
+              <div class="dl" style="margin-top:15px;padding-top:14px;border-top:1px solid var(--app-border);text-align:left">
+                <dt>Response time</dt><dd>&lt; 15 mins</dd>
+                <dt>Experience</dt><dd>8+ years</dd>
+                <dt>Handled</dt><dd>340 leases</dd></div>
+              <button class="btn btn-p btn-blk" style="margin-top:14px">Schedule a consultation</button>
+              <button class="btn btn-g btn-blk" style="margin-top:8px">Request a call back</button>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W18 APPROVED & BID ============================== -->
+<section class="screen" id="w18">
+  <div class="s-head"><div>
+    <h2>Lease approved · update bid</h2>
+    <p class="s-meta">from S17 · Lease Summary &amp; Bid Update · dbfffc72</p>
+  </div><span class="pill pill-warn"><u></u>Limit enforcement made explicit</span></div>
+  <p class="xform"><b>Mobile → web:</b> this screen joins finance to bidding, so desktop puts the two side by side — approved terms left, the live lot and bid control right, with the headroom calculation visible between them. The spec's open question BR-13 (may a bid exceed the approved limit?) is <b>answered in the interface</b>: bids above the $205,000 safe ceiling are allowed but warn, and bids above the $215,000 approved limit are blocked.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">carbid.com/leasing/CB-2049-LX/approved</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span></b></div>
+        <div class="s-item"><u></u>Explore</div><div class="s-item"><u></u>My bids</div>
+        <div class="s-item"><u></u>Sell a car</div><div class="s-item" data-on="true"><u></u>Leasing</div>
+        <div class="s-item"><u></u>Profile</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><p class="crumb">Leasing / <span style="color:var(--app-text)">CB-2049-LX</span></p>
+          <div class="spacer"></div><span class="pill pill-live"><u></u>Approved</span></div>
+        <div class="main"><div class="split-w">
+          <div class="stack">
+            <div class="card card-p">
+              <div class="flow" style="gap:11px"><span class="pill pill-live"><u></u></span>
+                <h3 style="font-size:16px">Lease approved</h3></div>
+              <p class="hint" style="margin-top:6px">Your financing for the 2024 Porsche 911 GT3 RS is verified and ready.</p>
+              <div class="grid2" style="margin-top:16px">
+                <div class="card card-p" style="background:var(--app-bg)"><small class="hint">Monthly payment</small>
+                  <div class="money" style="font-size:21px;margin-top:2px">$2,450</div></div>
+                <div class="card card-p" style="background:var(--app-bg)"><small class="hint">Approved limit</small>
+                  <div class="money" style="font-size:21px;margin-top:2px">$215,000</div></div>
+                <div class="card card-p" style="background:var(--app-bg)"><small class="hint">Lease term</small>
+                  <div class="money" style="font-size:21px;margin-top:2px">36 mo</div></div>
+                <div class="card card-p" style="background:var(--app-bg)"><small class="hint">Down payment</small>
+                  <div class="money" style="font-size:21px;margin-top:2px">$15,000</div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Bidding headroom</h3><span class="pill pill-mute">Live</span></div>
+              <div class="card-p">
+                <div class="slider" style="margin-bottom:11px"><div class="slider-t" style="height:8px">
+                  <div class="slider-f" style="left:0;width:90%;background:linear-gradient(90deg,#135bec 0 78%,#f59e0b 78% 100%)"></div>
+                  <div class="slider-h" style="left:90%;top:4px"></div>
+                </div><div class="slider-l"><span>$0</span><span>$215,000 limit</span></div></div>
+                <div class="dl">
+                  <dt>Current high bid</dt><dd class="money">$192,500</dd>
+                  <dt>Your max bid</dt><dd class="money">$185,000</dd>
+                  <dt>Safe ceiling · no extra deposit</dt><dd class="money" style="color:#7ee2a8">$205,000</dd>
+                  <dt>Hard limit · approved amount</dt><dd class="money" style="color:#fcd34d">$215,000</dd>
+                </div>
+                <div class="note note-ok" style="margin-top:14px"><u></u><div>You can bid up to <b>$205,000</b> without increasing your $15,000 down payment. Between $205,000 and $215,000 the shortfall is added to your deposit. Bids above $215,000 are declined.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="stack sticky">
+            <div class="card">
+              <div class="card-h"><span class="pill pill-live"><u></u>Live auction</span>
+                <span class="pill pill-mute">Lot #4402</span></div>
+              <div class="ph ph-16" style="border-radius:0;border-left:0;border-right:0" data-l="911 GT3 RS"></div>
+              <div class="card-p">
+                <h3 style="font-size:14.5px">2024 Porsche 911 GT3 RS</h3>
+                <p class="hint" style="margin-top:2px">Weissach Package</p>
+                <div style="margin-top:14px;padding-top:13px;border-top:1px solid var(--app-border)">
+                  <small class="hint">Current high bid</small>
+                  <div class="money" style="font-size:21px;margin-top:2px">$192,500</div></div>
+                <div style="margin-top:13px;padding-top:13px;border-top:1px solid var(--app-border)">
+                  <div class="sec-t" style="margin-bottom:8px">Update your max bid</div>
+                  <div class="flow" style="gap:8px">
+                    <button class="btn" style="padding:9px 13px">−</button>
+                    <div class="inp-pre" style="flex:1"><i>$</i><input class="inp" value="195,000"></div>
+                    <button class="btn" style="padding:9px 13px">+</button></div>
+                  <p class="hint" style="margin-top:7px">$10,000 increments · within your safe ceiling</p>
+                  <button class="btn btn-p btn-lg btn-blk" style="margin-top:11px">Update my bid</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================== W19 DEALER ONBOARDING ============================== -->
+<section class="screen" id="w19">
+  <div class="s-head"><div>
+    <h2>Dealer facility onboarding</h2>
+    <p class="s-meta">from S18 · Agent: Document Upload · 00e260c1</p>
+  </div><span class="pill pill-dngr"><u></u>B2B — separate surface</span></div>
+  <p class="xform"><b>Mobile → web:</b> this was never a consumer screen. It is dealer inventory financing — DMS exports, state operating licenses, a $2.5M credit line — rendered inside the consumer leasing tab under a title ("Agent: Document Upload") that describes neither its content nor its user. On web it moves to a <b>separate dealer console</b> with its own nav, and the ingest results the mobile screen promised but never showed are made real: extracted VINs, valuations and row-level errors.</p>
+  <div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">dealers.carbid.com/onboarding/facility</div></div>
+    <div class="app"><div class="app-grid">
+      <aside class="side" style="background:#0a0f18">
+        <div class="mark"><i>C</i><b>Car<span style="color:#5b8dff">Bid</span> <span style="color:var(--app-muted);font-weight:600;font-size:11px">DEALER</span></b></div>
+        <div class="s-item" data-on="true"><u></u>Onboarding</div>
+        <div class="s-item"><u></u>Inventory</div><div class="s-item"><u></u>Credit line</div>
+        <div class="s-item"><u></u>Auctions</div><div class="s-item"><u></u>Settlements</div>
+        <div class="side-foot">Sterling Motors LLC<br>Dealer #DLR-4471</div>
+      </aside>
+      <div style="min-width:0">
+        <div class="top"><h2>Facility onboarding</h2><div class="spacer"></div>
+          <span class="pill pill-warn"><u></u>2 of 3 complete</span></div>
+        <div class="main"><div class="split">
+          <div class="stack">
+            <div class="card card-p">
+              <div class="sec-t">Inventory management</div>
+              <p class="hint">Complete your facility profile to unlock higher auction limits and premium financing tiers.</p>
+              <div class="grid2" style="margin-top:15px">
+                <label class="fld"><span>Requested credit</span>
+                  <div class="inp-pre"><i>$</i><input class="inp" value="2,500,000"><i style="border:0;border-left:1px solid var(--app-border)">USD</i></div></label>
+                <label class="fld"><span>Lease term</span>
+                  <select class="inp"><option>5 years</option><option>3 years</option><option>7 years</option></select></label>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Supporting documents</h3><span class="pill pill-live"><u></u>2 required · both received</span></div>
+              <div class="card-p stack-s">
+                <div class="file"><u></u><b>inventory_q3_final.xlsx</b>
+                  <span class="pill pill-live"><u></u>Synced</span><button class="btn btn-g">Replace</button></div>
+                <p class="hint">Facility inventory · .xlsx or .csv exported from your DMS</p>
+                <div class="file" style="margin-top:8px"><u></u><b>state_license_2024.pdf</b>
+                  <span class="pill pill-live"><u></u>Verified</span><button class="btn btn-g">Replace</button></div>
+                <p class="hint">Operating license · scanned copy of state certification</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Inventory ingest results</h3>
+                <span class="pill pill-info"><u></u>New on web</span></div>
+              <div class="scroll-x"><table class="tbl">
+                <thead><tr><th>VIN</th><th>Vehicle</th><th class="num">Book value</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono">WP0AA2A96NS220156</td><td>2022 Porsche 911 Carrera</td>
+                    <td class="num money">$128,400</td><td><span class="pill pill-live"><u></u>Matched</span></td></tr>
+                  <tr><td class="mono">ZFF95NLA9N0281447</td><td>2022 Ferrari SF90 Stradale</td>
+                    <td class="num money">$2,480,000</td><td><span class="pill pill-live"><u></u>Matched</span></td></tr>
+                  <tr><td class="mono">WBS83CH0XPCK92210</td><td>2024 BMW M4 Competition</td>
+                    <td class="num money">$92,750</td><td><span class="pill pill-live"><u></u>Matched</span></td></tr>
+                  <tr style="background:rgba(239,68,68,.06)"><td class="mono" style="color:#fca5a5">SBM14FCA0LW0043—</td>
+                    <td class="hint">Row 44 · VIN truncated to 16 characters</td>
+                    <td class="num hint">—</td><td><span class="pill pill-dngr"><u></u>Fix required</span></td></tr>
+                </tbody></table></div>
+              <div class="card-h" style="border-top:1px solid var(--app-border);border-bottom:0">
+                <p class="hint">41 of 42 rows matched · 1 needs attention</p>
+                <button class="btn">Resolve 1 error</button></div>
+            </div>
+            <div class="flow" style="justify-content:flex-end">
+              <button class="btn btn-p btn-lg">Submit facility details</button></div>
+            <p class="hint">By submitting you agree to the <a href="#" style="color:#5b8dff">Dealer Terms</a>.</p>
+          </div>
+          <div class="stack sticky">
+            <div class="card card-p">
+              <div class="sec-t">CarBid Verification</div>
+              <p class="hint">Our system extracts VINs and book values from your DMS export automatically. Review completes in under 2 hours.</p>
+              <div class="dl" style="margin-top:14px;padding-top:13px;border-top:1px solid var(--app-border)">
+                <dt>Rows received</dt><dd>42</dd>
+                <dt>VINs matched</dt><dd style="color:#7ee2a8">41</dd>
+                <dt>Errors</dt><dd style="color:#fca5a5">1</dd>
+                <dt>Total book value</dt><dd class="money">$18.4M</dd></div>
+            </div>
+            <div class="card card-p"><div class="sec-t">Unlocks at approval</div>
+              <div class="stack-s">
+                <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Auction limit → $2.5M per lot</span></div>
+                <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Premium financing tier</span></div>
+                <div class="flow"><span class="pill pill-live"><u></u></span><span class="hint">Bulk listing via DMS sync</span></div>
+              </div></div>
+          </div>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<div class="foot">
+  <h3>About this translation</h3>
+  <p>Nineteen web screens from eighteen mobile designs — the extra one is the sell wizard's step 3, which never existed on mobile. Every screen uses CarBid's own tokens rather than a new visual identity, and all four resolved decisions are applied throughout: CarBid branding, the blue <code class="mono">#135bec</code> system, plain dollar amounts, and the four-step wizard.</p>
+  <ul>
+    <li><b>Manrope substitution.</b> The design system specifies Manrope. Font CDNs are blocked here and no binary was available to inline, so a geometric system stack stands in. Swap in the real face for production.</li>
+    <li><b>Photography is placeholder.</b> Vehicle imagery is rendered as gradient blocks with labels; no stock or generated photography is implied.</li>
+    <li><b>Dark by design, not by default.</b> All 18 mobile screens are dark and the design system declares <code class="mono">DARK</code>, so the product screens stay dark in both themes. Only the review chrome around them follows your OS light/dark preference.</li>
+    <li><b>Layout target is 1440px.</b> Screens reflow down to roughly 760px, below which the product nav collapses to a horizontal strip. They are not a substitute for a genuine mobile breakpoint — that is what the Stitch designs are.</li>
+    <li><b>Some gaps are answered here, deliberately.</b> Payment capture, wire references, ingest error handling, message threads and lease-limit enforcement are drawn because the flows are incoherent without them. Each is a proposal for review, not a settled decision — see <code class="mono">REQUIREMENTS.md</code> §12.</li>
+  </ul>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('.nav-b'));
+  function show(id){
+    document.querySelectorAll('.screen').forEach(function(s){
+      s.setAttribute('data-active', s.id===id ? 'true':'false');
+    });
+    btns.forEach(function(b){
+      b.setAttribute('aria-current', b.dataset.go===id ? 'true':'false');
+    });
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  btns.forEach(function(b){ b.addEventListener('click',function(){ show(b.dataset.go); }); });
+})();
+</script>
+
+</body>
+</html>
